@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serverless Cloud Architecture - Damir Krkalić</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Project-specific styles */
+        .project-header {
+            height: 50vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .project-section {
+            margin-bottom: 60px;
+        }
+        
+        .project-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .project-section h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #3498db;
+        }
+        
+        .project-image {
+            margin: 30px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .project-quote {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-left: 4px solid #3498db;
+            font-style: italic;
+            margin: 30px 0;
+        }
+        
+        .architecture-diagram {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .service-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .service-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .next-prev-projects {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .next-prev-link {
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .next-prev-link:hover {
+            color: #3498db;
+        }
+        
+        .next-prev-link svg {
+            width: 20px;
+            height: 20px;
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .project-header {
+                height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="damir.html">Back</a>
+            </div>
+            <div class="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Header -->
+    <header class="project-header">
+        <div>
+            <h1>Serverless Cloud Architecture</h1>
+            <p>AWS-based solutions with S3, CloudFormation, CloudFront, RDS, IAM, SNS, and DynamoDB</p>
+        </div>
+    </header>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        <!-- Overview Section -->
+        <section class="project-section">
+            <h2>Project Overview</h2>
+            <p>During my time at Feller AG by Schneider Electric, I contributed to the development of a modern serverless cloud architecture to power their digital solutions for connected buildings. The architecture was designed to support the company's digital transformation initiatives, including their "Wiser by Feller" smart home automation system.</p>
+            
+            <div class="project-image">
+                <img src="images/serverless-overview.png" alt="AWS Serverless Architecture Dashboard">
+            </div>
+            
+            <p>This serverless architecture leveraged AWS cloud services to create a scalable, resilient, and cost-effective backend for multiple applications, eliminating the need for traditional server management while ensuring high availability and performance. The solution supported both customer-facing applications and internal operational tools, enabling Feller to modernize their digital offerings and improve their market position in the smart home and building automation sector.</p>
+        </section>
+
+        <!-- Challenge Section -->
+        <section class="project-section">
+            <h2>The Challenge</h2>
+            <p>Feller AG faced several challenges in their digital transformation journey that necessitated a modern cloud-based approach:</p>
+            <ul>
+                <li>Their existing infrastructure was based on legacy systems with high maintenance costs</li>
+                <li>Scaling limitations prevented rapid response to varying loads, especially during peak usage periods</li>
+                <li>Development cycles were slow due to complex deployment processes</li>
+                <li>There was a need for improved security and compliance features to protect sensitive user data</li>
+                <li>The system needed to support real-time updates and notifications for connected home devices</li>
+                <li>Cost predictability was a concern with traditional always-on server infrastructure</li>
+            </ul>
+            
+            <div class="project-quote">
+                "We needed a modern cloud architecture that could scale dynamically, reduce operational overhead, and allow our teams to focus on innovation rather than infrastructure management."
+            </div>
+            
+            <p>The challenge was to design a serverless architecture that would not only address these immediate concerns but also provide a future-proof foundation for the company's growing portfolio of connected building solutions, ensuring flexibility, reliability, and cost-effectiveness.</p>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="project-section">
+            <h2>The Solution</h2>
+            <p>We designed and implemented a comprehensive serverless architecture on AWS that leveraged multiple cloud services to create a robust, scalable, and cost-effective solution:</p>
+            
+            <div class="architecture-diagram">
+                <img src="images/serverless-architecture.png" alt="AWS Serverless Architecture Diagram">
+            </div>
+            
+            <div class="service-grid">
+                <div class="service-card">
+                    <div class="service-icon">🔄</div>
+                    <h3 class="service-title">AWS CloudFormation</h3>
+                    <p>Infrastructure as Code (IaC) implementation for consistent, version-controlled deployment of cloud resources across environments.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💾</div>
+                    <h3 class="service-title">Amazon S3</h3>
+                    <p>Highly available object storage for static assets, configuration files, and data backups with lifecycle policies.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h3 class="service-title">AWS Lambda</h3>
+                    <p>Serverless compute services running backend logic without server management, automatically scaling with demand.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🌐</div>
+                    <h3 class="service-title">Amazon CloudFront</h3>
+                    <p>Content delivery network (CDN) for fast, secure delivery of application assets with global reach and low latency.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔐</div>
+                    <h3 class="service-title">AWS IAM</h3>
+                    <p>Fine-grained access control with least privilege principles to secure all cloud resources and user access.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3 class="service-title">Amazon DynamoDB</h3>
+                    <p>Fully managed NoSQL database for high-performance, scalable storage of device and user configuration data.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📨</div>
+                    <h3 class="service-title">Amazon SNS</h3>
+                    <p>Pub/sub messaging service for real-time notifications and alerts to both users and internal systems.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📝</div>
+                    <h3 class="service-title">Amazon RDS</h3>
+                    <p>Managed relational database service for structured data storage with automated backups and scaling.</p>
+                </div>
+            </div>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Auto-scaling architecture:</strong> Resources automatically scale up or down based on demand, eliminating capacity planning concerns.</li>
+                <li><strong>Pay-per-use model:</strong> Cost optimization by only paying for actual compute resources used rather than idle servers.</li>
+                <li><strong>DevOps integration:</strong> CI/CD pipelines for automated testing and deployment of infrastructure and application code.</li>
+                <li><strong>Multi-environment support:</strong> Separate development, testing, and production environments with consistent configurations.</li>
+                <li><strong>High availability:</strong> Multi-AZ (Availability Zone) deployment for resilience against infrastructure failures.</li>
+                <li><strong>Enhanced security:</strong> Comprehensive security controls including encryption at rest and in transit, VPC isolation, and least privilege access.</li>
+                <li><strong>Real-time data processing:</strong> Event-driven architecture for handling device data updates and user interactions.</li>
+                <li><strong>Monitoring and observability:</strong> Integrated logging, monitoring, and alerting for system health and performance.</li>
+            </ul>
+            
+            <h3>My Role & Contributions</h3>
+            <p>As a Software Engineer on this project, my responsibilities included:</p>
+            <ul>
+                <li>Designing and implementing Infrastructure as Code (IaC) using CloudFormation templates</li>
+                <li>Developing serverless backend services with AWS Lambda and integrating with other AWS services</li>
+                <li>Creating RESTful APIs using API Gateway for communication between frontend applications and backend services</li>
+                <li>Implementing data storage solutions across DynamoDB and RDS based on data access patterns</li>
+                <li>Setting up CI/CD pipelines for automated testing and deployment of infrastructure changes</li>
+                <li>Configuring CloudFront distributions and S3 buckets for optimal content delivery</li>
+                <li>Designing and implementing IAM roles and policies following the principle of least privilege</li>
+                <li>Creating event-driven notification systems using SNS for real-time updates</li>
+            </ul>
+            
+            <h3>Technology Stack</h3>
+            <div class="tech-stack">
+                <span class="tech-tag">AWS</span>
+                <span class="tech-tag">CloudFormation</span>
+                <span class="tech-tag">Lambda</span>
+                <span class="tech-tag">S3</span>
+                <span class="tech-tag">CloudFront</span>
+                <span class="tech-tag">DynamoDB</span>
+                <span class="tech-tag">RDS</span>
+                <span class="tech-tag">IAM</span>
+                <span class="tech-tag">SNS</span>
+                <span class="tech-tag">API Gateway</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">Terraform</span>
+                <span class="tech-tag">Git</span>
+                <span class="tech-tag">CI/CD</span>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="project-section">
+            <h2>Results & Impact</h2>
+            <p>The implementation of the serverless cloud architecture delivered significant benefits for Feller AG:</p>
+            
+            <ul>
+                <li>Achieved 99.99% uptime for critical services, improving customer satisfaction and trust</li>
+                <li>Reduced infrastructure costs by 40% compared to the previous solution by eliminating idle server capacity</li>
+                <li>Decreased deployment time from days to minutes, enabling more frequent feature releases</li>
+                <li>Improved scalability allowed the system to handle 10x more simultaneous users during peak periods</li>
+                <li>Enhanced security posture with comprehensive logging, monitoring, and automated security controls</li>
+                <li>Simplified compliance reporting with built-in audit trails and access controls</li>
+                <li>Enabled development teams to focus on feature development rather than infrastructure management</li>
+                <li>Provided a platform for rapid prototyping and deployment of new connected building features</li>
+            </ul>
+            
+            <div class="project-image">
+                <img src="images/serverless-results.png" alt="Performance Metrics Dashboard">
+            </div>
+            
+            <p>The serverless architecture created a foundation for Feller AG's digital transformation, enabling them to innovate faster, scale more efficiently, and provide better experiences for both internal users and customers interacting with their smart home solutions.</p>
+            
+            <div class="project-quote">
+                "The serverless architecture has transformed our ability to develop and deliver digital services. We've seen dramatic improvements in development velocity, operational efficiency, and can now respond to market opportunities much faster than before."
+            </div>
+        </section>
+
+        <!-- Next/Previous Projects -->
+        <div class="next-prev-projects">
+            <a href="agent-locator-project.html" class="next-prev-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Previous Project
+            </a>
+            <a href="damir.html#portfolio" class="next-prev-link">
+                All Projects
+            </a>
+            <a href="electric-car-project.html" class="next-prev-link">
+                Next Project
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Damir Krkalić. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

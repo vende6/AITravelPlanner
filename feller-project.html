@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feller AG User Management Portal - Damir Krkalić</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Project-specific styles */
+        .project-header {
+            height: 50vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .project-section {
+            margin-bottom: 60px;
+        }
+        
+        .project-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .project-section h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #3498db;
+        }
+        
+        .project-image {
+            margin: 30px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .project-quote {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-left: 4px solid #3498db;
+            font-style: italic;
+            margin: 30px 0;
+        }
+        
+        .next-prev-projects {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .next-prev-link {
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .next-prev-link:hover {
+            color: #3498db;
+        }
+        
+        .next-prev-link svg {
+            width: 20px;
+            height: 20px;
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .project-header {
+                height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="damir.html">Back</a>
+            </div>
+            <div class="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Header -->
+    <header class="project-header">
+        <div>
+            <h1>Feller AG User Management Portal</h1>
+            <p>Centralized identity management and authentication solution for Switzerland's leading electronics manufacturer</p>
+        </div>
+    </header>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        <!-- Overview Section -->
+        <section class="project-section">
+            <h2>Project Overview</h2>
+            <p>Working as part of a cross-functional team, I contributed to the development of a centralized user management portal for Feller AG, the leader in the Swiss electrical installation market and a Schneider Electric company. The solution delivers identity management for end users while also serving as an integration platform between Feller's applications and services.</p>
+            
+            <div class="project-image">
+                <img src="images/feller-overview.png" alt="Feller User Management Portal Dashboard">
+            </div>
+            
+            <p>The platform provides Single Sign-On (SSO), centralized user management, and delegated administration capabilities, which form the backbone of Feller's digital ecosystem. This solution enables secure and seamless access to various products and services while maintaining strict data protection standards.</p>
+        </section>
+
+        <!-- Challenge Section -->
+        <section class="project-section">
+            <h2>The Challenge</h2>
+            <p>Feller AG faced several challenges with their existing user authentication and management systems:</p>
+            <ul>
+                <li>Multiple disconnected applications with separate user databases</li>
+                <li>Lack of centralized user management capabilities</li>
+                <li>No ability for company administrators to manage their users</li>
+                <li>Inconsistent user experience across different platforms</li>
+                <li>Limited real-time analytics on user activity and behavior</li>
+            </ul>
+            
+            <div class="project-quote">
+                "Feller sought an Identity partner to help define, design and develop a new platform for SSO, delegated company administration and real-time analytics."
+            </div>
+            
+            <p>Our task was to create a robust identity management solution that would serve as the foundation for Feller's digital transformation efforts, enabling seamless integration between their various applications while providing enterprise-grade security.</p>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="project-section">
+            <h2>The Solution</h2>
+            <p>We developed a comprehensive identity and access management solution with Auth0 at its core. The system provides:</p>
+            
+            <ul>
+                <li>Single Sign-On (SSO) across all Feller applications and services</li>
+                <li>Centralized user management with role-based access control</li>
+                <li>Delegated administration for company administrators</li>
+                <li>Real-time analytics and reporting on user activity</li>
+                <li>Integration with existing systems through APIs</li>
+            </ul>
+            
+            <div class="project-image">
+                <img src="images/feller-solution.png" alt="Feller User Management Interface">
+            </div>
+            
+            <p>The solution architecture placed Auth0 at the center, providing enterprise-grade Identity-as-a-Service (IDaaS) for all applications, products, and platforms within the Feller ecosystem. This enabled a microservice architecture for user management within the business and facilitated data sharing between applications.</p>
+            
+            <h3>My Role & Contributions</h3>
+            <p>As a Software Engineer on this project, my responsibilities included:</p>
+            <ul>
+                <li>Development of the centralized user management portal web application</li>
+                <li>Maintenance of the customer identity and access management (CIAM) solution provided by Auth0</li>
+                <li>Working with Auth0 management platform across multiple tenants</li>
+                <li>Implementing Rules and Hooks as part of the authentication pipeline</li>
+                <li>Integration with Amazon Web Services (AWS)</li>
+            </ul>
+            
+            <h3>Technology Stack</h3>
+            <div class="tech-stack">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">React Native</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">Auth0</span>
+                <span class="tech-tag">AWS</span>
+                <span class="tech-tag">Serverless Architecture</span>
+                <span class="tech-tag">S3</span>
+                <span class="tech-tag">CloudFormation</span>
+                <span class="tech-tag">CloudFront</span>
+                <span class="tech-tag">RDS</span>
+                <span class="tech-tag">IAM</span>
+                <span class="tech-tag">SNS</span>
+                <span class="tech-tag">DynamoDB</span>
+                <span class="tech-tag">Xamarin</span>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="project-section">
+            <h2>Results & Impact</h2>
+            <p>The implementation of the User Management Portal delivered significant benefits to Feller AG:</p>
+            
+            <ul>
+                <li>Unified user experience across all digital touchpoints</li>
+                <li>Reduced administrative overhead through self-service and delegated administration</li>
+                <li>Improved security through centralized authentication and authorization</li>
+                <li>Enhanced visibility into user activity and behavior</li>
+                <li>Simplified integration of new applications into the ecosystem</li>
+                <li>Enabled data sharing between applications to create a more connected experience</li>
+            </ul>
+            
+            <div class="project-image">
+                <img src="images/feller-results.png" alt="Feller User Management Portal Dashboard">
+            </div>
+            
+            <p>The solution now serves as a critical foundation for Feller's digital ecosystem, enabling them to deliver seamless, secure, and personalized experiences to their customers across all digital touchpoints.</p>
+        </section>
+
+        <!-- Next/Previous Projects -->
+        <div class="next-prev-projects">
+            <a href="#" class="next-prev-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Previous Project
+            </a>
+            <a href="damir.html#portfolio" class="next-prev-link">
+                All Projects
+            </a>
+            <a href="#" class="next-prev-link">
+                Next Project
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Damir Krkalić. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>

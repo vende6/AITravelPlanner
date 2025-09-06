@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Locator Mobile App - Damir Krkalić</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Project-specific styles */
+        .project-header {
+            height: 50vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .project-section {
+            margin-bottom: 60px;
+        }
+        
+        .project-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .project-section h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #3498db;
+        }
+        
+        .project-image {
+            margin: 30px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .project-quote {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-left: 4px solid #3498db;
+            font-style: italic;
+            margin: 30px 0;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .next-prev-projects {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .next-prev-link {
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .next-prev-link:hover {
+            color: #3498db;
+        }
+        
+        .next-prev-link svg {
+            width: 20px;
+            height: 20px;
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .project-header {
+                height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="damir.html">Back</a>
+            </div>
+            <div class="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Header -->
+    <header class="project-header">
+        <div>
+            <h1>Agent Locator Mobile App</h1>
+            <p>CRM consumer-facing mobile application for browsing real estate listings across platforms</p>
+        </div>
+    </header>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        <!-- Overview Section -->
+        <section class="project-section">
+            <h2>Project Overview</h2>
+            <p>During my time at Agent Locator in Mississauga, Ontario, I worked as a Software Engineer on their customer relationship management (CRM) consumer-facing mobile application. The Agent Locator CRM app enables real estate agents to manage their leads and tasks from anywhere, providing seamless access to their entire database on their smartphones.</p>
+            
+            <div class="project-image">
+                <img src="images/agent-locator-overview.png" alt="Agent Locator Mobile App Overview">
+            </div>
+            
+            <p>The application allows clients to browse through real estate listings and properties in their area while giving real estate agents powerful tools to engage with leads, manage their contacts, and organize their tasks efficiently. The app essentially provides all the functionality of the desktop CRM in a mobile format, enabling agents to respond to leads immediately without needing to access their computers.</p>
+        </section>
+
+        <!-- Challenge Section -->
+        <section class="project-section">
+            <h2>The Challenge</h2>
+            <p>Real estate agents face several challenges in their daily work that the Agent Locator app needed to address:</p>
+            <ul>
+                <li>Slow response times to new leads, reducing conversion rates</li>
+                <li>Difficulty managing client information and follow-ups while on the go</li>
+                <li>Inefficient communication with potential clients across multiple channels</li>
+                <li>Need to access property listings and client information from anywhere</li>
+                <li>Challenge of maintaining consistent follow-up schedules with leads</li>
+                <li>Complex integration requirements with existing CRM systems</li>
+            </ul>
+            
+            <div class="project-quote">
+                "Real estate agents needed a mobile solution that would give them the power of their desktop CRM in their pocket, allowing for instant follow-up and management of their entire client database while in the field."
+            </div>
+            
+            <p>Our challenge was to create a comprehensive mobile application that could deliver all the essential CRM features with an intuitive user interface, ensuring agents could effectively manage their business from anywhere while providing a seamless experience for potential homebuyers browsing property listings.</p>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="project-section">
+            <h2>The Solution</h2>
+            <p>We developed a cross-platform mobile application that functions as an extension of the desktop CRM, providing real estate agents with a complete toolkit for managing leads, tasks, and client communications on the go.</p>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Real-Time Notifications</h3>
+                    <p>Instant alerts for new leads, lead activity, and upcoming tasks to ensure no opportunity is missed.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📞</div>
+                    <h3 class="feature-title">Integrated Communication</h3>
+                    <p>Built-in calling, email, and texting functionality for immediate response to leads without switching apps.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✅</div>
+                    <h3 class="feature-title">Task Management</h3>
+                    <p>Comprehensive task management with reminders and push notifications to keep agents on top of their follow-ups.</p>
+                </div>
+            </div>
+            
+            <div class="project-image">
+                <img src="images/agent-locator-solution.png" alt="Agent Locator Mobile App Interface">
+            </div>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Lead Management:</strong> Ability to add new contacts, update information, and organize leads with tags and notes.</li>
+                <li><strong>Property Browsing:</strong> Search and browse real estate listings with detailed property information.</li>
+                <li><strong>Communication Tools:</strong> Integrated calling, texting, and emailing capabilities directly from the app.</li>
+                <li><strong>E-Campaign Integration:</strong> Options to apply or stop email campaigns to leads.</li>
+                <li><strong>Task Scheduling:</strong> Create, edit, and manage follow-up tasks with reminder notifications.</li>
+                <li><strong>Database Management:</strong> Complete access to the agent's contact database for viewing and editing.</li>
+                <li><strong>Cross-Platform Compatibility:</strong> Available on both iOS and Android devices with consistent functionality.</li>
+            </ul>
+            
+            <h3>My Role & Contributions</h3>
+            <p>As a Software Engineer on this project, my responsibilities included:</p>
+            <ul>
+                <li>Development of the mobile application using Xamarin.Forms for cross-platform functionality</li>
+                <li>Implementation of OAuth/Cookie/Token authentication and authorization flows</li>
+                <li>Integration with backend APIs for real-time data synchronization</li>
+                <li>Creating a responsive UI that worked across different device sizes</li>
+                <li>Implementing push notification services for real-time lead alerts</li>
+                <li>Working with platform-specific features for optimal performance on both iOS and Android</li>
+                <li>Ensuring secure data handling for sensitive client information</li>
+            </ul>
+            
+            <h3>Technology Stack</h3>
+            <div class="tech-stack">
+                <span class="tech-tag">Xamarin.Native</span>
+                <span class="tech-tag">Xamarin.Forms</span>
+                <span class="tech-tag">C#</span>
+                <span class="tech-tag">.NET Framework</span>
+                <span class="tech-tag">iOS</span>
+                <span class="tech-tag">Android</span>
+                <span class="tech-tag">XCode</span>
+                <span class="tech-tag">Visual Studio for Mac</span>
+                <span class="tech-tag">OAuth</span>
+                <span class="tech-tag">REST APIs</span>
+                <span class="tech-tag">Azure DevOps</span>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="project-section">
+            <h2>Results & Impact</h2>
+            <p>The Agent Locator Mobile App has delivered significant value to real estate professionals:</p>
+            
+            <ul>
+                <li>Dramatically improved lead response times, increasing conversion rates by enabling agents to respond while on the go</li>
+                <li>Enhanced agent productivity by providing complete database access from mobile devices</li>
+                <li>Streamlined client communications through integrated calling, emailing, and texting capabilities</li>
+                <li>Improved task completion rates through push notification reminders</li>
+                <li>Reduced administrative time spent on managing contacts and updating client information</li>
+                <li>Provided a seamless experience between desktop and mobile platforms for real estate agents</li>
+            </ul>
+            
+            <div class="project-image">
+                <img src="images/agent-locator-results.png" alt="Agent Locator Mobile App Dashboard">
+            </div>
+            
+            <p>The application has become an essential tool for real estate agents using the Agent Locator CRM, allowing them to effectively manage their business from anywhere and respond to opportunities immediately, significantly improving their ability to convert leads and provide better service to clients.</p>
+            
+            <div class="project-quote">
+                "By bringing the power of the desktop CRM to mobile devices, we've enabled real estate agents to respond faster, work more efficiently, and ultimately close more deals."
+            </div>
+        </section>
+
+        <!-- Next/Previous Projects -->
+        <div class="next-prev-projects">
+            <a href="electric-car-project.html" class="next-prev-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Previous Project
+            </a>
+            <a href="damir.html#portfolio" class="next-prev-link">
+                All Projects
+            </a>
+            <a href="feller-project.html" class="next-prev-link">
+                Next Project
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Damir Krkalić. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

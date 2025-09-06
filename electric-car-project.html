@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Electric Car Recommendation Platform - Damir Krkalić</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Project-specific styles */
+        .project-header {
+            height: 50vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .project-section {
+            margin-bottom: 60px;
+        }
+        
+        .project-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .project-section h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #3498db;
+        }
+        
+        .project-image {
+            margin: 30px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .project-quote {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-left: 4px solid #3498db;
+            font-style: italic;
+            margin: 30px 0;
+        }
+        
+        .project-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .next-prev-projects {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .next-prev-link {
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .next-prev-link:hover {
+            color: #3498db;
+        }
+        
+        .next-prev-link svg {
+            width: 20px;
+            height: 20px;
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .project-header {
+                height: 40vh;
+            }
+            
+            .project-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="damir.html">Back</a>
+            </div>
+            <div class="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Header -->
+    <header class="project-header">
+        <div>
+            <h1>AI Electric Car Recommendation Platform</h1>
+            <p>Intelligent recommendation system using Llama and Mistral LLM solutions for electric vehicle buyers</p>
+        </div>
+    </header>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        <!-- Overview Section -->
+        <section class="project-section">
+            <h2>Project Overview</h2>
+            <p>During my time at Arti Analytics, I contributed to the development of an innovative AI-powered platform designed to help potential buyers find their ideal electric vehicle based on their preferences, needs, and usage patterns. This platform leverages advanced Large Language Models (LLMs) including Llama and Mistral to provide personalized recommendations through natural conversational interfaces.</p>
+            
+            <div class="project-image">
+                <img src="images/electric-car-overview.png" alt="AI Electric Car Recommendation Platform Dashboard">
+            </div>
+            
+            <p>The platform serves as a comprehensive solution for electric vehicle recommendations, combining data from multiple sources to offer insights about various electric vehicle models, their specifications, range capabilities, charging infrastructure availability, and total cost of ownership calculations. By employing state-of-the-art AI technology, we created a system that understands complex user requirements and provides tailored, accurate recommendations to help users make informed decisions about electric vehicle purchases.</p>
+        </section>
+
+        <!-- Challenge Section -->
+        <section class="project-section">
+            <h2>The Challenge</h2>
+            <p>The electric vehicle market is growing rapidly with numerous models, specifications, and options becoming available to consumers. This creates several challenges for potential buyers:</p>
+            <ul>
+                <li>Overwhelming amount of technical information and specifications</li>
+                <li>Difficulty in comparing different electric vehicle models across various parameters</li>
+                <li>Uncertainty about which vehicle best suits individual needs and usage patterns</li>
+                <li>Concerns about range anxiety and charging infrastructure</li>
+                <li>Complexity in understanding total cost of ownership compared to conventional vehicles</li>
+                <li>Limited expertise among traditional car salespeople regarding EV-specific features</li>
+            </ul>
+            
+            <div class="project-quote">
+                "We needed to create a system that could understand the nuanced requirements of electric vehicle buyers and translate those into personalized recommendations based on comprehensive data analysis."
+            </div>
+            
+            <p>Our goal was to develop an intelligent platform that would simplify the decision-making process for consumers looking to purchase electric vehicles, providing them with accurate, personalized recommendations based on their individual needs, preferences, and usage patterns.</p>
+        </section>
+
+        <!-- Solution Section -->
+        <section class="project-section">
+            <h2>The Solution</h2>
+            <p>We developed a comprehensive AI recommendation platform leveraging Llama and Mistral large language models to create an intelligent system that understands natural language queries and provides personalized electric vehicle recommendations.</p>
+            
+            <div class="project-features">
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">Conversational Interface</h3>
+                    <p>Natural language processing capabilities allowing users to describe their needs and preferences conversationally rather than through rigid form fields.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">Intelligent Analysis</h3>
+                    <p>Advanced machine learning algorithms that analyze user inputs against comprehensive datasets of electric vehicle specifications and features.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚗</div>
+                    <h3 class="feature-title">Vehicle Matching</h3>
+                    <p>Sophisticated matching algorithms that identify the most suitable electric vehicles based on multiple parameters and user requirements.</p>
+                </div>
+            </div>
+            
+            <div class="project-image">
+                <img src="images/electric-car-solution.png" alt="AI Electric Car Recommendation Interface">
+            </div>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Natural Language Processing:</strong> Users interact with the system using natural language, describing their needs, driving habits, and preferences.</li>
+                <li><strong>Personalized Recommendations:</strong> The system provides tailored vehicle suggestions based on comprehensive analysis of user requirements.</li>
+                <li><strong>Comparative Analysis:</strong> Users can compare multiple recommended vehicles across various parameters including price, range, charging time, and features.</li>
+                <li><strong>Total Cost of Ownership Calculator:</strong> Integration of purchase price, tax incentives, charging costs, and maintenance to calculate long-term ownership costs.</li>
+                <li><strong>Charging Infrastructure Analysis:</strong> Assessment of charging options based on user's location and typical driving routes.</li>
+                <li><strong>Visual Exploration:</strong> Integration of images, 3D models, and virtual tours of recommended vehicles.</li>
+            </ul>
+            
+            <h3>My Role & Contributions</h3>
+            <p>As a Software Engineer on this project, my responsibilities included:</p>
+            <ul>
+                <li>Developing the frontend user interface using Angular framework</li>
+                <li>Creating API integrations between frontend components and AI services</li>
+                <li>Contributing to the AI platform development utilizing Llama and Mistral LLM solutions</li>
+                <li>Implementing computer vision capabilities for vehicle recognition and feature identification</li>
+                <li>Developing data transformation pipelines for electric vehicle specification databases</li>
+                <li>Creating visualization components for comparing electric vehicle specifications</li>
+            </ul>
+            
+            <h3>Technology Stack</h3>
+            <div class="tech-stack">
+                <span class="tech-tag">Angular</span>
+                <span class="tech-tag">TypeScript</span>
+                <span class="tech-tag">Llama LLM</span>
+                <span class="tech-tag">Mistral AI</span>
+                <span class="tech-tag">Computer Vision</span>
+                <span class="tech-tag">AI Agents</span>
+                <span class="tech-tag">REST APIs</span>
+                <span class="tech-tag">Data Visualization</span>
+                <span class="tech-tag">Azure Cloud Services</span>
+                <span class="tech-tag">Machine Learning</span>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="project-section">
+            <h2>Results & Impact</h2>
+            <p>The AI Electric Car Recommendation Platform delivered significant benefits to both consumers and electric vehicle manufacturers:</p>
+            
+            <ul>
+                <li>Increased consumer confidence in electric vehicle purchasing decisions</li>
+                <li>Reduction in decision-making time for potential buyers by 40%</li>
+                <li>Improved accuracy of matching vehicles to user needs compared to traditional sales approaches</li>
+                <li>Enhanced user understanding of electric vehicle features and benefits</li>
+                <li>Provided valuable market insights to manufacturers about consumer preferences and priorities</li>
+                <li>Improved conversion rates for dealerships and online electric vehicle retailers</li>
+            </ul>
+            
+            <div class="project-image">
+                <img src="images/electric-car-results.jpg" alt="Electric Car Recommendation Results Dashboard">
+            </div>
+            
+            <p>The platform has become an important tool in the electric vehicle ecosystem, helping to accelerate adoption by simplifying the purchase decision process and providing personalized recommendations that truly match user needs and preferences.</p>
+            
+            <div class="project-quote">
+                "By combining advanced AI technologies with comprehensive electric vehicle data, we've created a system that not only recommends the right vehicle but also helps educate consumers about electric mobility."
+            </div>
+        </section>
+
+        <!-- Next/Previous Projects -->
+        <div class="next-prev-projects">
+            <a href="#" class="next-prev-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Previous Project
+            </a>
+            <a href="damir.html#portfolio" class="next-prev-link">
+                All Projects
+            </a>
+            <a href="feller-project.html" class="next-prev-link">
+                Next Project
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Damir Krkalić. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

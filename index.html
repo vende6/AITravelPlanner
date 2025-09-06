@@ -11,7 +11,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="#home">Damir Krkalić</a>
+                <a href="#home">Damir Krkalic</a>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
@@ -143,13 +143,13 @@
                 <h2>Portfolio</h2>
                 <p>Some of my recent work</p>
             </div>
-            <div class="portfolio-filter">
+            <!-- <div class="portfolio-filter">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="web">Web Apps</button>
                 <button class="filter-btn" data-filter="mobile">Mobile</button>
                 <button class="filter-btn" data-filter="ai">AI Solutions</button>
                 <button class="filter-btn" data-filter="cloud">Cloud</button>
-            </div>
+            </div> -->
             <div class="portfolio-grid">
                 <div class="portfolio-item" data-category="ai">
                     <div class="portfolio-image">
@@ -158,7 +158,7 @@
                     <div class="portfolio-content">
                         <h3>AI Electric Car Recommendation Platform</h3>
                         <p>Developed AI platform using Llama and Mistral LLM solutions for recommending electrical cars to potential buyers</p>
-                        <a href="#" class="portfolio-link">View Project</a>
+                        <a href="electric-car-project.html" class="portfolio-link">View Project</a>
                     </div>
                 </div>
                 <div class="portfolio-item" data-category="web">
@@ -168,7 +168,7 @@
                     <div class="portfolio-content">
                         <h3>Centralized User Management Portal</h3>
                         <p>Developed for Feller by Schneider Electric with Auth0 for identity management</p>
-                        <a href="#" class="portfolio-link">View Project</a>
+                        <a href="feller-project.html" class="portfolio-link">View Project</a>
                     </div>
                 </div>
                 <div class="portfolio-item" data-category="mobile">
@@ -178,7 +178,7 @@
                     <div class="portfolio-content">
                         <h3>Agent Locator Mobile App</h3>
                         <p>CRM consumer-facing mobile application for browsing real estate listings across platforms</p>
-                        <a href="#" class="portfolio-link">View Project</a>
+                        <a href="agent-locator-project.html" class="portfolio-link">View Project</a>
                     </div>
                 </div>
                 <div class="portfolio-item" data-category="cloud">
@@ -188,7 +188,7 @@
                     <div class="portfolio-content">
                         <h3>Serverless Cloud Architecture</h3>
                         <p>AWS-based solutions with S3, CloudFormation, CloudFront, RDS, IAM, SNS, and DynamoDB</p>
-                        <a href="#" class="portfolio-link">View Project</a>
+                        <a href="serverless-project.html" class="portfolio-link">View Project</a>
                     </div>
                 </div>
             </div>
@@ -268,9 +268,9 @@
                         </div>
                     </div>
                     <div class="social-links">
-                        <a href="https://www.linkedin.com/in/damir-krkalic-b52a07176/" class="social-link">LinkedIn</a>
-                        <a href="https://github.com/vende6" class="social-link">GitHub</a>
-                        <a href="https://x.com/dkrkalic" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                        <a href="#" class="social-link">GitHub</a>
+                        <a href="#" class="social-link">Twitter</a>
                     </div>
                 </div>
                 <form class="contact-form">
@@ -295,7 +295,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Damir Krkalić. All rights reserved.</p>
+            <p>&copy; 2025 Damir Krkalic. All rights reserved.</p>
         </div>
     </footer>
 
@@ -1053,7 +1053,9 @@ filterButtons.forEach(button => {
         const filterValue = button.getAttribute('data-filter');
         
         portfolioItems.forEach(item => {
-            if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+            const category = item.getAttribute('data-category');
+            if (filterValue === 'all' || category === filterValue) {
+                item.classList.remove('hidden');
                 item.style.display = 'block';
                 setTimeout(() => {
                     item.style.opacity = '1';
@@ -1064,11 +1066,15 @@ filterButtons.forEach(button => {
                 item.style.transform = 'scale(0.8)';
                 setTimeout(() => {
                     item.style.display = 'none';
+                    item.classList.add('hidden');
                 }, 300);
             }
         });
     });
 });
+
+// Initialize portfolio filtering (show all items by default)
+document.querySelector('.filter-btn[data-filter="all"]').click();
 
 // Contact form handling
 const contactForm = document.querySelector('.contact-form');
@@ -1116,4 +1122,9 @@ portfolioItems.forEach((item, index) => {
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero');
-    const rate =
+    if (hero) {
+        const speed = 0.3;
+        hero.style.backgroundPosition = `50% ${scrolled * speed}px`;
+    }
+});
+</script>

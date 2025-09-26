@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding Software - Damir Krkalić</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Project-specific styles */
+        .project-header {
+            height: 50vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .project-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .project-section {
+            margin-bottom: 60px;
+        }
+        
+        .project-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .project-section h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #3498db;
+        }
+        
+        .project-image {
+            margin: 30px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .tech-tag {
+            background-color: #f1f1f1;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .project-quote {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-left: 4px solid #3498db;
+            font-style: italic;
+            margin: 30px 0;
+        }
+        
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .feature-table th, .feature-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .feature-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .feature-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .feature-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .feature-icon {
+            font-size: 1.8rem;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .music-section {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .music-list {
+            counter-reset: music-counter;
+        }
+        
+        .music-item {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 50px;
+        }
+        
+        .music-item::before {
+            counter-increment: music-counter;
+            content: counter(music-counter) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .music-item h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .persona-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .persona-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .next-prev-projects {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .next-prev-link {
+            display: flex;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .next-prev-link:hover {
+            color: #3498db;
+        }
+        
+        .next-prev-link svg {
+            width: 20px;
+            height: 20px;
+            margin: 0 10px;
+        }
+        
+        /* Code showcase styles */
+        .code-showcase {
+            margin: 40px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .code-navigation {
+            display: flex;
+            background-color: #2c3e50;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        .code-tab {
+            padding: 12px 20px;
+            color: #fff;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .code-tab.active {
+            background-color: #3498db;
+        }
+        
+        .code-tab:hover:not(.active) {
+            background-color: #34495e;
+        }
+        
+        .code-content {
+            position: relative;
+        }
+        
+        .code-block {
+            display: none;
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            line-height: 1.5;
+        }
+        
+        .code-block.active {
+            display: block;
+        }
+        
+        .code-block pre {
+            margin: 0;
+        }
+        
+        .code-filename {
+            display: inline-block;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            color: #f8f8f2;
+            background-color: #34495e;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .comment { color: #5c6370; font-style: italic; }
+        .keyword { color: #c678dd; }
+        .function { color: #61afef; }
+        .string { color: #98c379; }
+        .number { color: #d19a66; }
+        .import { color: #e06c75; }
+        .component { color: #56b6c2; }
+        .tag { color: #e06c75; }
+        .attribute { color: #d19a66; }
+        .punctuation { color: #abb2bf; }
+        
+        @media (max-width: 768px) {
+            .project-header {
+                height: 40vh;
+            }
+            
+            .feature-table {
+                font-size: 0.9rem;
+            }
+            
+            .feature-icon {
+                font-size: 1.5rem;
+            }
+            
+            .code-tab {
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Mobile app mockup styles */
+        .mobile-mockup {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            perspective: 1000px;
+            position: relative;
+        }
+        
+        .coming-soon-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 20px;
+            transform: rotate(45deg);
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .phone-device {
+            width: 300px;
+            height: 600px;
+            background-color: #111;
+            border-radius: 36px;
+            padding: 10px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .phone-device:hover {
+            transform: rotateY(0);
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .app-header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .app-content {
+            padding: 20px;
+            height: calc(100% - 130px); /* header + navbar height */
+            overflow-y: auto;
+        }
+        
+        .app-input {
+            width: 100%;
+            height: 150px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            resize: none;
+        }
+        
+        .app-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-weight: bold;
+            width: 100%;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        
+        .app-navbar {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .nav-item {
+            text-align: center;
+            width: 25%;
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .nav-text {
+            font-size: 0.7rem;
+        }
+        
+        .nav-item.active .nav-icon,
+        .nav-item.active .nav-text {
+            color: #3498db;
+        }
+        
+        /* Recruiter Portal Styles */
+        .recruiter-portal {
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .portal-header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .portal-content {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .candidate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .candidate-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .candidate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .candidate-video {
+            width: 100%;
+            height: 200px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .video-control {
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .video-control:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .candidate-info {
+            padding: 15px;
+        }
+        
+        .candidate-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .candidate-score {
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+        
+        .traits-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .trait-chip {
+            background-color: #e8f4fd;
+            color: #3498db;
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+        }
+        
+        .candidate-feedback {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html#portfolio">Back to Portfolio</a>
+            </div>
+            <div class="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Project Header -->
+    <header class="project-header">
+        <div>
+            <h1>Onboarding Software</h1>
+            <p>Mobile traveling companion app for conscious recruitment and community building</p>
+        </div>
+    </header>
+
+    <!-- Project Content -->
+    <div class="project-content">
+        <!-- Recruiter Portal Section -->
+        <section class="project-section">
+            <h2>Recruiter Dashboard</h2>
+            <p>The Recruiter Dashboard provides hiring managers with deep insights into candidates' journeys, showcasing their values and behaviors through immersive reels and sustainability metrics.</p>
+            
+            <div class="recruiter-portal">
+                <div class="portal-header">
+                    Recruiter Dashboard
+                </div>
+                <div class="portal-content">
+                    <div class="candidate-grid">
+                        <div class="candidate-card">
+                            <div class="candidate-video">
+                                <img src="logo.png" alt="Candidate Reel Preview" style="height: 60px; opacity: 0.8;">
+                                <div class="video-controls">
+                                    <div class="video-control">▶</div>
+                                    <div class="video-control">⏸</div>
+                                </div>
+                            </div>
+                            <div class="candidate-info">
+                                <div class="candidate-name">Alex Explorer</div>
+                                <div class="candidate-score">Eco Score: 🌱 92</div>
+                                <div class="traits-container">
+                                    <span class="trait-chip">Empathetic</span>
+                                    <span class="trait-chip">Curious</span>
+                                </div>
+                                <div class="candidate-feedback">
+                                    "Authentic and insightful"
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="candidate-card">
+                            <div class="candidate-video">
+                                <img src="logo.png" alt="Candidate Reel Preview" style="height: 60px; opacity: 0.8;">
+                                <div class="video-controls">
+                                    <div class="video-control">▶</div>
+                                    <div class="video-control">⏸</div>
+                                </div>
+                            </div>
+                            <div class="candidate-info">
+                                <div class="candidate-name">Jamie Trailblazer</div>
+                                <div class="candidate-score">Eco Score: 🌱 88</div>
+                                <div class="traits-container">
+                                    <span class="trait-chip">Open-minded</span>
+                                    <span class="trait-chip">Resilient</span>
+                                </div>
+                                <div class="candidate-feedback">
+                                    "Great storytelling"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="code-showcase">
+                <div class="code-navigation">
+                    <button class="code-tab active" onclick="showCode('app')">App.js</button>
+                    <button class="code-tab" onclick="showCode('candidateList')">CandidateList.js</button>
+                    <button class="code-tab" onclick="showCode('candidateCard')">CandidateCard.js</button>
+                </div>
+                
+                <div class="code-content">
+                    <div id="app-code" class="code-block active">
+                        <span class="code-filename">App.js</span>
+                        <pre><span class="keyword">import</span> <span class="import">React</span> <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> { <span class="import">Container</span>, <span class="import">Typography</span> } <span class="keyword">from</span> <span class="string">'@mui/material'</span>;
+<span class="keyword">import</span> <span class="import">CandidateList</span> <span class="keyword">from</span> <span class="string">'./components/CandidateList'</span>;
+
+<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">return</span> (
+    <span class="tag">&lt;Container&gt;</span>
+      <span class="tag">&lt;Typography</span> <span class="attribute">variant</span>=<span class="string">"h4"</span> <span class="attribute">gutterBottom</span><span class="tag">&gt;</span>
+        Recruiter Dashboard
+      <span class="tag">&lt;/Typography&gt;</span>
+      <span class="tag">&lt;CandidateList</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/Container&gt;</span>
+  );
+}
+
+<span class="keyword">export</span> <span class="keyword">default</span> App;</pre>
+                    </div>
+                    
+                    <div id="candidateList-code" class="code-block">
+                        <span class="code-filename">CandidateList.js</span>
+                        <pre><span class="keyword">import</span> <span class="import">React</span> <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> { <span class="import">Grid</span> } <span class="keyword">from</span> <span class="string">'@mui/material'</span>;
+<span class="keyword">import</span> <span class="import">CandidateCard</span> <span class="keyword">from</span> <span class="string">'./CandidateCard'</span>;
+
+<span class="keyword">const</span> candidates = [
+  {
+    name: <span class="string">'Alex Explorer'</span>,
+    traits: [<span class="string">'Empathetic'</span>, <span class="string">'Curious'</span>],
+    ecoScore: <span class="number">92</span>,
+    reelUrl: <span class="string">'https://example.com/reel1.mp4'</span>,
+    feedback: <span class="string">'Authentic and insightful'</span>
+  },
+  {
+    name: <span class="string">'Jamie Trailblazer'</span>,
+    traits: [<span class="string">'Open-minded'</span>, <span class="string">'Resilient'</span>],
+    ecoScore: <span class="number">88</span>,
+    reelUrl: <span class="string">'https://example.com/reel2.mp4'</span>,
+    feedback: <span class="string">'Great storytelling'</span>
+  }
+];
+
+<span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="function">CandidateList</span>() {
+  <span class="keyword">return</span> (
+    <span class="tag">&lt;Grid</span> <span class="attribute">container</span> <span class="attribute">spacing</span>=<span class="component">{2}</span><span class="tag">&gt;</span>
+      {candidates.map((candidate, index) => (
+        <span class="tag">&lt;Grid</span> <span class="attribute">item</span> <span class="attribute">xs</span>=<span class="component">{12}</span> <span class="attribute">md</span>=<span class="component">{6}</span> <span class="attribute">key</span>=<span class="component">{index}</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;CandidateCard</span> <span class="attribute">candidate</span>=<span class="component">{candidate}</span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;/Grid&gt;</span>
+      ))}
+    <span class="tag">&lt;/Grid&gt;</span>
+  );
+}</pre>
+                    </div>
+                    
+                    <div id="candidateCard-code" class="code-block">
+                        <span class="code-filename">CandidateCard.js</span>
+                        <pre><span class="keyword">import</span> <span class="import">React</span> <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> { <span class="import">Card</span>, <span class="import">CardContent</span>, <span class="import">Typography</span>, <span class="import">Chip</span>, <span class="import">CardMedia</span> } <span class="keyword">from</span> <span class="string">'@mui/material'</span>;
+
+<span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="function">CandidateCard</span>({ candidate }) {
+  <span class="keyword">return</span> (
+    <span class="tag">&lt;Card&gt;</span>
+      <span class="tag">&lt;CardMedia</span>
+        <span class="attribute">component</span>=<span class="string">"video"</span>
+        <span class="attribute">src</span>=<span class="component">{candidate.reelUrl}</span>
+        <span class="attribute">controls</span>
+        <span class="attribute">height</span>=<span class="string">"200"</span>
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;CardContent&gt;</span>
+        <span class="tag">&lt;Typography</span> <span class="attribute">variant</span>=<span class="string">"h6"</span><span class="tag">&gt;</span>{candidate.name}<span class="tag">&lt;/Typography&gt;</span>
+        <span class="tag">&lt;Typography</span> <span class="attribute">variant</span>=<span class="string">"body2"</span><span class="tag">&gt;</span>Eco Score: 🌱 {candidate.ecoScore}<span class="tag">&lt;/Typography&gt;</span>
+        <span class="tag">&lt;Typography</span> <span class="attribute">variant</span>=<span class="string">"body2"</span><span class="tag">&gt;</span>Traits:<span class="tag">&lt;/Typography&gt;</span>
+        {candidate.traits.map((trait, i) => (
+          <span class="tag">&lt;Chip</span> <span class="attribute">key</span>=<span class="component">{i}</span> <span class="attribute">label</span>=<span class="component">{trait}</span> <span class="attribute">style</span>=<span class="component">{{ marginRight: 5 }}</span> <span class="tag">/&gt;</span>
+        ))}
+        <span class="tag">&lt;Typography</span> <span class="attribute">variant</span>=<span class="string">"body2"</span> <span class="attribute">style</span>=<span class="component">{{ marginTop: 10 }}</span><span class="tag">&gt;</span>
+          Recruiter Feedback: {candidate.feedback}
+        <span class="tag">&lt;/Typography&gt;</span>
+      <span class="tag">&lt;/CardContent&gt;</span>
+    <span class="tag">&lt;/Card&gt;</span>
+  );
+}</pre>
+                    </div>
+                </div>
+            </div>
+            
+            <p>The Recruiter Dashboard is built using React with Material UI components, providing a clean and responsive interface for reviewing candidate journeys. The dashboard displays video reels, eco-consciousness scores, personality traits, and feedback notes to help recruiters make informed decisions based on authentic, value-aligned behaviors.</p>
+        </section>
+
+        <!-- Mobile App Mockup -->
+        <section class="project-section">
+            <h2>Mobile Companion App</h2>
+            <p>The Mobile Companion App is an innovative platform currently in development, designed to guide candidates through eco-conscious cities while documenting their journey. <strong>This application is yet to be announced</strong> and represents the next evolution in our value-based recruitment approach.</p>
+            
+            <div class="mobile-mockup">
+                <div class="coming-soon-badge">Coming Soon</div>
+                <div class="phone-device">
+                    <div class="phone-screen">
+                        <div class="app-header">Journal</div>
+                        <div class="app-content">
+                            <textarea class="app-input" placeholder="Write your thoughts..."></textarea>
+                            <button class="app-button">Submit Journal</button>
+                        </div>
+                        <div class="app-navbar">
+                            <div class="nav-item active">
+                                <div class="nav-icon">📝</div>
+                                <div class="nav-text">Journal</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">🎬</div>
+                                <div class="nav-text">Reels</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">🧠</div>
+                                <div class="nav-text">Assessments</div>
+                            </div>
+                            <div class="nav-item">
+                                <div class="nav-icon">👤</div>
+                                <div class="nav-text">Profile</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p>The upcoming mobile application will feature four main components to create a comprehensive recruitment journey:</p>
+            <ul>
+                <li><strong>Journal:</strong> Record thoughts, experiences, and reflections during city explorations</li>
+                <li><strong>Reels:</strong> Create and share short video stories documenting sustainability activities</li>
+                <li><strong>Assessments:</strong> Complete behavioral and cognitive assessments to measure alignment</li>
+                <li><strong>Profile:</strong> View personalized metrics, sustainability scores, and trait analyses</li>
+            </ul>
+            
+            <div class="project-quote">
+                "Our upcoming mobile app will transform how candidates showcase their authentic selves, moving beyond static resumes to dynamic, experience-based storytelling that reveals true alignment with organizational values."
+            </div>
+        </section>
+
+        <!-- Core Concept Section -->
+        <section class="project-section">
+            <h2>Core Concept</h2>
+            <p>The Onboarding Software represents a transformative approach to talent acquisition and community building through a mobile traveling companion app that serves multiple innovative functions:</p>
+            
+            <ul>
+                <li><strong>Identifies and recruits conscious individuals</strong> who align with sustainable values and community goals</li>
+                <li><strong>Guides them through cities</strong> with curated routes focusing on sustainability and eco-conscious initiatives</li>
+                <li><strong>Captures their journey using ReelSync-style storytelling</strong> to document authentic experiences and personal growth</li>
+                <li><strong>Builds community through shared values and behavioral alignment</strong> fostering connections based on sustainability goals</li>
+            </ul>
+            
+            <div class="project-image">
+                <img src="logo.png" alt="Onboarding Software Logo" style="max-height: 300px; width: auto; margin: 0 auto;">
+            </div>
+            
+            <p>This innovative platform reimagines the traditional onboarding and recruitment process by turning it into an immersive journey that reveals candidates' authentic values, behavior patterns, and commitment to sustainability principles.</p>
+        </section>
+
+        <!-- Integration with ReelSync Section -->
+        <section class="project-section">
+            <h2>Integration with ReelSync</h2>
+            <p>ReelSync focuses on innovative software ideas across industries. Here's how it complements the onboarding system:</p>
+            
+            <ul>
+                <li><strong>Multimedia journaling:</strong> Candidates document their onboarding journey with short video reels, voice notes, and geo-tagged photos.</li>
+                <li><strong>Story-driven recruitment:</strong> Instead of static CVs, candidates showcase their personality and values through travel stories.</li>
+                <li><strong>Social layer:</strong> Users can follow others, comment on reels, and build connections based on shared sustainability goals.</li>
+            </ul>
+            
+            <div class="project-quote">
+                "We're transforming recruitment from a static document review to a dynamic, immersive storytelling experience that reveals authentic values and behaviors in real-world contexts."
+            </div>
+            
+            <p>The integration with ReelSync technology creates a multidimensional profile of each candidate that goes far beyond traditional resumes and interviews, allowing for more authentic connections and better alignment between candidates and organizations.</p>
+        </section>
+
+        <!-- Next/Previous Projects -->
+        <div class="next-prev-projects">
+            <a href="index.html#services" class="next-prev-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to Services
+            </a>
+            <a href="index.html#portfolio" class="next-prev-link">
+                All Projects
+            </a>
+            <a href="electric-car-project.html" class="next-prev-link">
+                View Other Project
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Damir Krkalić. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Code showcase functionality
+        function showCode(tabId) {
+            // Hide all code blocks
+            const codeBlocks = document.querySelectorAll('.code-block');
+            codeBlocks.forEach(block => {
+                block.classList.remove('active');
+            });
+            
+            // Show selected code block
+            document.getElementById(tabId + '-code').classList.add('active');
+            
+            // Update tab styling
+            const tabs = document.querySelectorAll('.code-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Find the clicked tab and make it active
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

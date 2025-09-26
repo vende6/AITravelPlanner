@@ -1,0 +1,38 @@
+{
+  "app": {
+    "name": "Travel Planner MCP",
+    "version": "1.0.0",
+    "port": 3000,
+    "environment": "development"
+  },
+  "jwtSecret": "your_jwt_secret_key_here",
+  "azureOpenAI": {
+    "endpoint": "https://your-azure-openai-resource.openai.azure.com/",
+    "apiKey": "your_azure_openai_key_here", 
+    "useConnectionString": true,
+    "deployments": {
+      "chat": "gpt-4-turbo",
+      "embeddings": "text-embedding-ada-002"
+    }
+  },
+  "azureAISearch": {
+    "endpoint": "https://your-search-service.search.windows.net",
+    "apiKey": "your_search_api_key_here",
+    "useConnectionString": true,
+    "indexes": {
+      "flight": "flights-index",
+      "hotel": "hotels-index",
+      "activity": "activities-index"
+    },
+    "semanticConfig": "default"
+  },
+  "mcp": {
+    "endpoint": "https://your-azure-openai-resource.openai.azure.com/",
+    "deploymentId": "gpt-4-turbo",
+    "apiVersion": "2023-07-01-preview"
+  },
+  "logging": {
+    "level": "info",
+    "format": "combined"
+  }
+}

@@ -1,123 +1,151 @@
 /**
- * Model Context Protocol (MCP) Handler
- * Manages the communication protocol between specialized AI agents
+ * MCP Protocol Handler
+ * Core implementation of the Model Context Protocol for agent interactions
  */
 
-const { DefaultAzureCredential } = require('@azure/identity');
-const { OpenAIClient } = require('@azure/openai');
+const { OpenAIClient, AzureKeyCredential } = require('@azure/openai');
+require('dotenv').config();
 
 class MCPProtocolHandler {
   constructor(config) {
-    this.config = config;
-    this.credential = new DefaultAzureCredential();
-    this.client = new OpenAIClient(config.endpoint, this.credential);
-    this.deploymentId = config.deploymentId;
-    this.messageHistory = [];
+    // Initialize Azure OpenAI client
+    this.endpoint = config.endpoint || process.env.AZURE_OPENAI_ENDPOINT;
+    this.deploymentId = config.deploymentId || process.env.AZURE_OPENAI_DEPLOYMENT_ID || 'gpt-4-turbo';
+    
+    // Use API key from config or environment variable
+    const apiKey = config.apiKey || process.env.AZURE_OPENAI_API_KEY;
+    this.client = new OpenAIClient(
+      this.endpoint, 
+      new AzureKeyCredential(apiKey)
+    );
+    
+    // Initialize conversation context
+    this.messages = [];
+    this.agentContexts = new Map();
   }
 
   /**
-   * Initializes a new conversation context
+   * Initialize a new conversation context
    */
   initializeContext() {
-    this.messageHistory = [
-      {
-        role: "system",
-        content: "You are part of a multi-agent travel planning system. Your goal is to collaborate with specialized agents to create an optimal travel itinerary."
-      }
-    ];
-    return this.messageHistory;
+    this.messages = [];
+    this.agentContexts = new Map();
+    console.log('Conversation context initialized');
   }
 
   /**
-   * Adds a message to the conversation context
-   * @param {string} role - The role of the message sender (system, user, assistant, agent)
-   * @param {string} content - The message content
-   * @param {string} agentId - Optional agent identifier for specialized agents
+   * Add a message to the conversation context
+   * @param {string} role - Message role (system, user, assistant, tool)
+   * @param {string} content - Message content
+   * @param {string} agentId - Optional agent identifier
    */
   addMessage(role, content, agentId = null) {
-    const message = { role, content };
+    const message = {
+      role,
+      content
+    };
     
-    // Add agent metadata if provided
+    // Add agent identifier if provided
     if (agentId) {
-      message.metadata = { agent_id: agentId };
+      message.name = agentId;
+      
+      // Track the most recent message for each agent
+      this.agentContexts.set(agentId, this.messages.length);
     }
     
-    this.messageHistory.push(message);
-    return message;
+    this.messages.push(message);
   }
 
   /**
-   * Processes a message through Azure OpenAI with MCP formatting
-   * @param {string} content - The message content to process
-   * @param {string} agentId - The agent identifier
-   * @param {Object} tools - Optional tools available to the agent
-   * @returns {Promise<Object>} The response from the model
+   * Process a message through a specific agent
+   * @param {string} query - User query to process
+   * @param {string} agentId - Agent identifier
+   * @param {Array} tools - Optional tools available to the agent
+   * @returns {Promise<Object>} Processing result
    */
-  async processMessage(content, agentId, tools = null) {
-    this.addMessage("user", content);
-    
-    const messages = this.formatMessagesForMCP(this.messageHistory, agentId);
-    
-    const options = {
-      maxTokens: 800,
-      temperature: 0.7
-    };
-    
-    if (tools) {
-      options.tools = tools;
-    }
-    
+  async processMessage(query, agentId, tools = null) {
     try {
+      // Check if we have a context for this agent
+      const hasAgentContext = this.agentContexts.has(agentId);
+      
+      // Add the user query if not already present
+      if (this.messages.length === 0 || this.messages[this.messages.length - 1].role !== 'user') {
+        this.addMessage('user', query);
+      }
+      
+      // Format messages for the MCP request
+      const mcpMessages = this._formatMessagesForMCP(agentId);
+      
+      // Build request options
+      const options = {
+        maxTokens: 800,
+        temperature: 0.7
+      };
+      
+      // Add tools if provided
+      if (tools && tools.length > 0) {
+        options.tools = tools;
+      }
+      
+      console.log(`Processing message with agent ${agentId}`);
+      
+      // Make the request to Azure OpenAI
       const result = await this.client.getChatCompletions(
         this.deploymentId,
-        messages,
+        mcpMessages,
         options
       );
       
+      // Extract the assistant's response
       const response = result.choices[0].message;
-      this.addMessage("assistant", response.content, agentId);
       
+      // Add the response to the conversation context
+      this.addMessage('assistant', response.content, agentId);
+      
+      // Return the full response for further processing
       return response;
     } catch (error) {
-      console.error('Error processing message with MCP:', error);
+      console.error(`Error processing message with agent ${agentId}:`, error);
       throw error;
     }
   }
-  
+
   /**
-   * Formats messages according to MCP conventions
-   * @param {Array} messages - The message history
-   * @param {string} currentAgentId - The current active agent ID
+   * Extract tool calls from an assistant's response
+   * @param {Object} response - Assistant's response
+   * @returns {Array|null} Extracted tool calls or null if none
+   */
+  extractToolCalls(response) {
+    if (response && response.toolCalls && response.toolCalls.length > 0) {
+      return response.toolCalls;
+    }
+    return null;
+  }
+
+  /**
+   * Format messages according to MCP conventions
+   * @param {string} currentAgentId - The current agent context
    * @returns {Array} MCP formatted messages
    */
-  formatMessagesForMCP(messages, currentAgentId) {
-    return messages.map(msg => {
+  _formatMessagesForMCP(currentAgentId) {
+    return this.messages.map((msg, index) => {
       const formattedMsg = {
         role: msg.role,
         content: msg.content
       };
       
-      // Add MCP-specific metadata
-      if (msg.metadata && msg.metadata.agent_id) {
-        formattedMsg.name = msg.metadata.agent_id;
+      // Add agent name if available
+      if (msg.name) {
+        formattedMsg.name = msg.name;
       }
       
       // Mark current agent context
-      if (msg.metadata && msg.metadata.agent_id === currentAgentId) {
+      if (msg.name === currentAgentId) {
         formattedMsg.context = "current";
       }
       
       return formattedMsg;
     });
-  }
-  
-  /**
-   * Extracts tool calls from a response if present
-   * @param {Object} response - The model response
-   * @returns {Array|null} Tool calls or null if none
-   */
-  extractToolCalls(response) {
-    return response.tool_calls || null;
   }
 }
 

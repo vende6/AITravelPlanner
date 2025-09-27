@@ -3,25 +3,24 @@
  * Handles user requests and coordinates the multi-agent system
  */
 
-const AgentOrchestrator = require('../agents/agentOrchestrator');
-const FlightAgent = require('../agents/flightAgent');
-const HotelAgent = require('../agents/hotelAgent');
-const LocalExperienceAgent = require('../agents/localExperienceAgent');
-const ItineraryAgent = require('../agents/itineraryAgent');
-const AzureOpenAIService = require('../core/services/azureOpenAI');
-const AzureAISearchService = require('../core/services/azureAISearch');
+const AgentOrchestrator = require('../../agents/agentOrchestrator');
+const FlightAgent = require('../../agents/flightAgent');
+const HotelAgent = require('../../agents/hotelAgent');
+const LocalExperienceAgent = require('../../agents/localExperienceAgent');
+const ItineraryAgent = require('../../agents/itineraryAgent');
+const AzureOpenAIService = require('../../core/services/azureOpenAI');
+const AzureAISearchService = require('../../core/services/azureAISearch');
+const MCPProtocolHandler = require('../../core/mcp/protocolHandler');
 
 class TravelPlannerController {
   constructor(config) {
-    this.config = config;
+    // Initialize services with configuration
+    this.openAIService = new AzureOpenAIService(config);
+    this.aiSearchService = new AzureAISearchService(config);
     
-    // Initialize core services
-    this.openAIService = new AzureOpenAIService(config.azureOpenAI);
-    this.aiSearchService = new AzureAISearchService(config.azureAISearch);
-    
-    // Initialize agent orchestrator
-    this.orchestrator = new AgentOrchestrator({
-      mcp: config.mcp
+    // Initialize protocol handler
+    this.protocolHandler = new MCPProtocolHandler({
+      openAIService: this.openAIService
     });
     
     // Initialize specialized agents
@@ -38,11 +37,13 @@ class TravelPlannerController {
     });
     
     this.itineraryAgent = new ItineraryAgent({
-      openAIService: this.openAIService
+      aiSearchClient: this.aiSearchService
     });
     
-    // Register agents with orchestrator
-    this.orchestrator
+    // Initialize agent orchestrator and register agents
+    this.agentOrchestrator = new AgentOrchestrator({
+      protocolHandler: this.protocolHandler
+    })
       .registerAgent('flightAgent', this.flightAgent)
       .registerAgent('hotelAgent', this.hotelAgent)
       .registerAgent('localExperienceAgent', this.localExperienceAgent)
@@ -51,204 +52,180 @@ class TravelPlannerController {
     // Keep track of user session data
     this.sessions = new Map();
   }
-
-  /**
-   * Initialize a new user session
-   * @param {string} userId - User identifier
-   * @returns {string} Session identifier
-   */
-  initializeSession(userId) {
-    const sessionId = `session-${Date.now()}-${userId.substring(0, 8)}`;
-    
-    this.sessions.set(sessionId, {
-      userId,
-      createdAt: new Date(),
-      travelPlan: this.orchestrator.initializeSession(),
-      queryHistory: [],
-      preferences: null
-    });
-    
-    console.log(`Initialized new session ${sessionId} for user ${userId}`);
-    return sessionId;
-  }
-
-  /**
-   * Process a user query and update the travel plan
-   * @param {string} sessionId - Session identifier
-   * @param {string} query - User's query text
-   * @returns {Promise<Object>} Processing result with updated plan and response
-   */
-  async processQuery(sessionId, query) {
+  
+  // Create a new session
+  createSession = (req, res) => {
     try {
-      // Get session data or throw error if not found
-      const session = this.sessions.get(sessionId);
-      if (!session) {
-        throw new Error(`Session ${sessionId} not found`);
+      const { userId } = req.body;
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
       }
       
-      // Add query to history
-      session.queryHistory.push({
-        timestamp: new Date(),
-        query
+      const sessionId = `session_${Date.now()}`;
+      
+      // Initialize a new session with the agent orchestrator
+      this.agentOrchestrator.initializeSession();
+      
+      // Store session data
+      this.sessions.set(sessionId, {
+        userId,
+        startTime: new Date(),
+        lastActivity: new Date(),
+        orchestrator: this.agentOrchestrator
       });
       
-      // Process query through orchestrator
-      const result = await this.orchestrator.processUserQuery(query);
+      return res.status(201).json({ sessionId });
+    } catch (error) {
+      console.error('Error creating session:', error);
+      return res.status(500).json({ error: 'Failed to create session' });
+    }
+  };
+  
+  // End session and clean up resources
+  endSession = (req, res) => {
+    try {
+      const { sessionId } = req.params;
       
-      // Update session with new travel plan
-      session.travelPlan = result.plan;
+      if (this.sessions.has(sessionId)) {
+        // Clean up session resources
+        this.sessions.delete(sessionId);
+        return res.status(200).json({ message: 'Session ended successfully' });
+      }
       
-      // If this is the third query or more, analyze user preferences
-      if (session.queryHistory.length >= 3 && !session.preferences) {
-        const queries = session.queryHistory.map(item => item.query);
+      return res.status(404).json({ error: 'Session not found' });
+    } catch (error) {
+      console.error('Error ending session:', error);
+      return res.status(500).json({ error: 'Failed to end session' });
+    }
+  };
+  
+  // Process user query through appropriate agents
+  processQuery = async (req, res) => {
+    try {
+      const { sessionId, query } = req.body;
+      
+      if (!sessionId || !query) {
+        return res.status(400).json({ error: 'Session ID and query are required' });
+      }
+      
+      const session = this.sessions.get(sessionId);
+      if (!session) {
+        return res.status(404).json({ error: 'Session not found' });
+      }
+      
+      // Update last activity timestamp
+      session.lastActivity = new Date();
+      
+      // Process query through agent orchestrator
+      const result = await session.orchestrator.processUserQuery(query);
+      
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error('Error processing query:', error);
+      return res.status(500).json({ error: 'Failed to process query' });
+    }
+  };
+  
+  // Get personalized recommendations based on current plan
+  getRecommendations = async (req, res) => {
+    try {
+      const { sessionId } = req.params;
+      
+      const session = this.sessions.get(sessionId);
+      if (!session) {
+        return res.status(404).json({ error: 'Session not found' });
+      }
+      
+      // Update last activity timestamp
+      session.lastActivity = new Date();
+      
+      // Get current plan from orchestrator
+      const currentPlan = session.orchestrator.currentPlan;
+      
+      // If we have the local experience agent, get personalized recommendations
+      let recommendations = [];
+      
+      if (currentPlan && currentPlan.destination) {
+        const location = currentPlan.destination || 
+                      (currentPlan.flights ? currentPlan.flights.destination : null) ||
+                      (currentPlan.hotels ? currentPlan.hotels.location : null);
+                      
+        if (location) {
+          // Get recommendations from local experience agent
+          const preferences = {
+            location,
+            interests: currentPlan.preferences?.interests || []
+          };
+          
+          const recommendationResults = await this.localExperienceAgent.getLocalRecommendations(preferences);
+          recommendations = recommendationResults?.activities || [];
+        }
+      }
+      
+      return res.status(200).json({ recommendations });
+    } catch (error) {
+      console.error('Error getting recommendations:', error);
+      return res.status(500).json({ error: 'Failed to get recommendations' });
+    }
+  };
+  
+  // Get or generate itinerary for current plan
+  getItinerary = async (req, res) => {
+    try {
+      const { sessionId } = req.params;
+      
+      const session = this.sessions.get(sessionId);
+      if (!session) {
+        return res.status(404).json({ error: 'Session not found' });
+      }
+      
+      // Update last activity timestamp
+      session.lastActivity = new Date();
+      
+      // Get current plan from orchestrator
+      const currentPlan = session.orchestrator.currentPlan;
+      
+      let itinerary;
+      
+      if (currentPlan && currentPlan.itinerary) {
+        // If we already have an itinerary, return it
+        itinerary = currentPlan.itinerary;
+      } else if (currentPlan && (currentPlan.flights || currentPlan.hotels)) {
+        // Generate a default itinerary based on current plan
+        itinerary = await this.itineraryAgent.generateDefaultItinerary(currentPlan);
         
-        // Run preference analysis asynchronously
-        this.analyzeUserPreferences(sessionId, queries).catch(err => {
-          console.error(`Error analyzing user preferences for session ${sessionId}:`, err);
+        // Update the plan with the new itinerary
+        session.orchestrator.currentPlan.itinerary = itinerary;
+      } else {
+        return res.status(400).json({ 
+          error: 'Not enough information to generate an itinerary. Please add flight or hotel details first.' 
         });
       }
       
-      return {
-        sessionId,
-        response: result.response,
-        plan: result.plan
-      };
+      return res.status(200).json({ itinerary });
     } catch (error) {
-      console.error(`Error processing query for session ${sessionId}:`, error);
-      throw error;
+      console.error('Error getting itinerary:', error);
+      return res.status(500).json({ error: 'Failed to get itinerary' });
     }
-  }
-
-  /**
-   * Analyze user preferences based on query history
-   * @param {string} sessionId - Session identifier
-   * @param {Array} queries - Array of user queries
-   * @returns {Promise<Object>} User preferences
-   */
-  async analyzeUserPreferences(sessionId, queries) {
-    try {
-      const session = this.sessions.get(sessionId);
-      if (!session) {
-        throw new Error(`Session ${sessionId} not found`);
-      }
-      
-      // Use Azure OpenAI to analyze preferences
-      const preferences = await this.openAIService.analyzeUserPreferences(queries);
-      
-      // Store preferences in session
-      session.preferences = preferences;
-      
-      console.log(`Updated preferences for session ${sessionId}`);
-      return preferences;
-    } catch (error) {
-      console.error(`Error analyzing preferences for session ${sessionId}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get user's current travel plan
-   * @param {string} sessionId - Session identifier
-   * @returns {Object} Current travel plan
-   */
-  getTravelPlan(sessionId) {
-    const session = this.sessions.get(sessionId);
-    if (!session) {
-      throw new Error(`Session ${sessionId} not found`);
-    }
-    
-    return session.travelPlan;
-  }
-
-  /**
-   * Generate a formatted travel itinerary document
-   * @param {string} sessionId - Session identifier
-   * @returns {Promise<string>} Formatted travel itinerary
-   */
-  async generateItineraryDocument(sessionId) {
-    try {
-      const session = this.sessions.get(sessionId);
-      if (!session) {
-        throw new Error(`Session ${sessionId} not found`);
-      }
-      
-      // Make sure we have an itinerary to format
-      if (!session.travelPlan.itinerary) {
-        throw new Error("No itinerary available in travel plan");
-      }
-      
-      // Use Azure OpenAI to generate a formatted itinerary
-      const summary = await this.openAIService.generateTravelSummary(session.travelPlan);
-      
-      return summary;
-    } catch (error) {
-      console.error(`Error generating itinerary for session ${sessionId}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get personalized recommendations based on user preferences and travel plan
-   * @param {string} sessionId - Session identifier
-   * @returns {Promise<Object>} Personalized recommendations
-   */
-  async getPersonalizedRecommendations(sessionId) {
-    try {
-      const session = this.sessions.get(sessionId);
-      if (!session) {
-        throw new Error(`Session ${sessionId} not found`);
-      }
-      
-      // Make sure we have preferences and destination
-      if (!session.preferences) {
-        throw new Error("No user preferences available");
-      }
-      
-      let destination = null;
-      
-      if (session.travelPlan.flights && session.travelPlan.flights.destination) {
-        destination = {
-          name: session.travelPlan.flights.destination,
-          type: "city"
-        };
-      } else if (session.travelPlan.hotels && session.travelPlan.hotels.location) {
-        destination = {
-          name: session.travelPlan.hotels.location,
-          type: "city"
-        };
-      } else if (session.travelPlan.itinerary && session.travelPlan.itinerary.destination) {
-        destination = {
-          name: session.travelPlan.itinerary.destination,
-          type: "city"
-        };
-      } else {
-        throw new Error("No destination found in travel plan");
-      }
-      
-      // Use OpenAI to generate personalized recommendations
-      const recommendations = await this.openAIService.getPersonalizedRecommendations(
-        session.preferences,
-        destination
-      );
-      
-      return recommendations;
-    } catch (error) {
-      console.error(`Error getting recommendations for session ${sessionId}:`, error);
-      throw error;
-    }
-  }
+  };
   
-  /**
-   * End a user session and cleanup resources
-   * @param {string} sessionId - Session identifier
-   */
-  endSession(sessionId) {
-    const session = this.sessions.get(sessionId);
-    if (session) {
-      console.log(`Ending session ${sessionId} for user ${session.userId}`);
-      this.sessions.delete(sessionId);
+  // Generate and return itinerary as PDF
+  getItineraryPdf = async (req, res) => {
+    try {
+      const { itineraryId } = req.params;
+      
+      // In a full implementation, we would generate a PDF here
+      // For now, we'll just return a placeholder message
+      
+      return res.status(501).json({ 
+        error: 'PDF generation not implemented yet',
+        message: 'This endpoint will generate and return a PDF of your itinerary in the future.'
+      });
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      return res.status(500).json({ error: 'Failed to generate PDF' });
     }
-  }
+  };
 }
 
 module.exports = TravelPlannerController;

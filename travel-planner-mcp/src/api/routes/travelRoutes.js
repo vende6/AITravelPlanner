@@ -5,36 +5,24 @@
 
 const express = require('express');
 const router = express.Router();
+const travelPlannerController = require('../controllers/travelPlannerController');
 
-// Health check specific to travel API
-router.get('/status', (req, res) => {
-  res.status(200).json({
-    status: 'ok',
-    message: 'Travel planning API is running',
-    features: {
-      flightSearch: 'pending',
-      hotelSearch: 'pending',
-      itineraryPlanning: 'pending'
-    }
-  });
-});
+// Initialize session
+router.post('/sessions', travelPlannerController.createSession);
 
-// Placeholder route for session creation
-router.post('/session', (req, res) => {
-  res.status(200).json({
-    sessionId: `temp-session-${Date.now()}`,
-    message: 'Temporary session created'
-  });
-});
+// End session
+router.delete('/sessions/:sessionId', travelPlannerController.endSession);
 
-// Placeholder route for query processing
-router.post('/query', (req, res) => {
-  const { query } = req.body;
-  
-  res.status(200).json({
-    response: `Echo: ${query}`,
-    message: 'This is a placeholder response while the full implementation is being completed.'
-  });
-});
+// Process user query
+router.post('/query', travelPlannerController.processQuery);
+
+// Get personalized recommendations
+router.get('/recommendations/:sessionId', travelPlannerController.getRecommendations);
+
+// Get itinerary
+router.get('/itinerary/:sessionId', travelPlannerController.getItinerary);
+
+// Get itinerary as PDF
+router.get('/itinerary/:itineraryId/pdf', travelPlannerController.getItineraryPdf);
 
 module.exports = router;

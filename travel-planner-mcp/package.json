@@ -7,7 +7,12 @@
     "start": "node startup.js",
     "dev": "nodemon startup.js",
     "test": "jest",
-    "check-azure": "node check-azure.js"
+    "check-azure": "node check-azure.js",
+    "frontend": "cd frontend && npm start",
+    "dev:all": "concurrently \"npm run dev\" \"npm run frontend\"",
+    "build:frontend": "cd frontend && npm run build",
+    "install:all": "npm install && cd frontend && npm install",
+    "dev:full": "node dev.js"
   },
   "keywords": [
     "azure",
@@ -24,8 +29,9 @@
     "@azure/openai": "^1.0.0-beta.6",
     "@azure/search-documents": "^12.0.0",
     "axios": "^1.6.2",
+    "concurrently": "^8.2.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.6.1",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.0",

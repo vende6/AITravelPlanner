@@ -10,6 +10,7 @@ const helmet = require('helmet');
 const path = require('path');
 const fs = require('fs');
 const { checkAzureOpenAIDeployments } = require('./utils/azureOpenAIChecker');
+const TravelPlannerController = require('./api/controllers/travelPlannerController');
 
 // Handle configuration loading with error checking
 let config;
@@ -27,6 +28,9 @@ try {
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || config.app.port || 3000;
+
+// Initialize controller
+const travelPlannerController = new TravelPlannerController(config);
 
 // Apply middleware
 app.use(helmet()); // Security headers
@@ -46,6 +50,16 @@ try {
 } catch (error) {
   console.error('Failed to load travel routes:', error);
   // Continue without routes - this allows at least the health check to work
+}
+
+// Serve static assets from the frontend build folder in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+  
+  // Any request that doesn't match an API route should serve the React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+  });
 }
 
 // Health check endpoint

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReelSync - Multimedia Journaling with Music Integration</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <h1>Reel<span>Sync</span></h1>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="#" data-page="home" class="active">Home</a></li>
+                    <li><a href="#" data-page="journal">Journal</a></li>
+                    <li><a href="#" data-page="music">Music</a></li>
+                    <li><a href="#" data-page="community">Community</a></li>
+                </ul>
+            </nav>
+            
+            <div class="auth-container">
+                <button id="loginBtn" class="login-button">Login</button>
+            </div>
+        </div>
+    </header>
+    
+    <main id="app" class="app-container">
+        <!-- Page content will be dynamically loaded here -->
+    </main>
+    
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Reel<span>Sync</span></h2>
+                    <p>© 2025 ReelSync. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-column">
+                        <h3>Support</h3>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close-modal"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2>Log In</h2>
+                <p>Welcome back! Log in to continue your journey.</p>
+            </div>
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="your.email@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Your password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="cta-button full-width">Log In</button>
+                </div>
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close-modal"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2>Sign Up</h2>
+                <p>Join ReelSync to capture and share your journey!</p>
+            </div>
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="fullName" placeholder="Your full name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail" placeholder="your.email@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupPassword" placeholder="Choose a password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="cta-button full-width">Create Account</button>
+                </div>
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" id="showLogin">Log in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Create Reel Modal -->
+    <div id="createReelModal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close-modal"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2>Create New Reel</h2>
+                <p>Capture your moment with music!</p>
+            </div>
+            <form id="createReelForm" class="reel-form">
+                <div class="form-group">
+                    <label for="reelTitle">Title<span class="required">*</span></label>
+                    <input type="text" id="reelTitle" placeholder="Give your reel a title" required>
+                </div>
+                <div class="form-group">
+                    <label for="reelDescription">Description</label>
+                    <textarea id="reelDescription" placeholder="Share more details about your experience" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="locationTag">Location<span class="required">*</span></label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" id="locationTag" placeholder="Where are you?" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Media</label>
+                    <div class="media-options">
+                        <button type="button" id="uploadVideo" class="media-button">
+                            <i class="fas fa-video"></i>
+                            <span>Video</span>
+                        </button>
+                        <button type="button" id="captureAudio" class="media-button">
+                            <i class="fas fa-microphone"></i>
+                            <span>Audio</span>
+                        </button>
+                        <button type="button" id="uploadImage" class="media-button">
+                            <i class="fas fa-image"></i>
+                            <span>Image</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="musicSelection">Select Music</label>
+                    <select id="musicSelection">
+                        <option value="">No music</option>
+                        <option value="berlin1">Urban Pulse - Berlin Ambient</option>
+                        <option value="berlin2">Underground Beat - Berlin Ambient</option>
+                        <option value="potsdam1">Park Melody - Potsdam Acoustic</option>
+                        <option value="focus1">Deep Concentration - Focus Tracks</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="cta-button full-width">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Page Templates -->
+    <!-- Home Page Template -->
+    <template id="home-template">
+        <div class="home-page">
+            <section class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Your Journey, Your Soundtrack</h1>
+                        <p>Document your experiences with personalized music that matches your mood and surroundings.</p>
+                        <button class="cta-button">Get Started</button>
+                    </div>
+                    <div class="hero-image">
+                        <div class="app-mockup">
+                            <div class="mockup-screen">
+                                <i class="fas fa-music"></i>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <i class="fas fa-book"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="features-section">
+                <div class="container">
+                    <h2>Capture More Than Memories</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h3>Journal Your Way</h3>
+                            <p>Document your experiences through text, audio, and video entries that capture the full essence of your journey.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <h3>Personalized Soundtrack</h3>
+                            <p>Our AI matches your mood, location, and personality to create the perfect musical backdrop for each moment.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>Vibrant Community</h3>
+                            <p>Connect with others, share your experiences, and discover new perspectives through music and stories.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="about-section">
+                <div class="container">
+                    <div class="about-content">
+                        <div class="about-text">
+                            <h2>Your Journey, Enhanced</h2>
+                            <p>ReelSync combines the power of multimedia journaling with AI-generated music recommendations to create a truly immersive way to document and relive your experiences.</p>
+                            <p>Whether you're starting a new job, exploring a new city, or embarking on any life journey, ReelSync helps you capture not just what happened, but how it felt.</p>
+                            <button class="cta-button">Create Your Account</button>
+                        </div>
+                        <div class="about-image">
+                            <div class="image-placeholder">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="testimonials-section">
+                <div class="container">
+                    <h2>What Our Users Say</h2>
+                    <div class="testimonials-slider">
+                        <div class="testimonial">
+                            <div class="quote">
+                                <p>"ReelSync helped me document my first month in Berlin with a soundtrack that perfectly matched my experience. Now I can relive those moments anytime."</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>Emma K.</h4>
+                                    <p>New Berliner</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </template>
+    
+    <!-- Journal Page Template -->
+    <template id="journal-template">
+        <div class="journal page-container">
+            <div class="page-header">
+                <h1>Your Journal</h1>
+                <button id="createReelBtn" class="create-reel-button action-button">
+                    <i class="fas fa-plus"></i> New Reel
+                </button>
+            </div>
+            
+            <div class="journal-content">
+                <div class="journal-feed">
+                    <!-- Journal entries will be loaded here -->
+                    <div class="loading-state">
+                        <div class="loader"></div>
+                        <p>Loading your journal entries...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Music Page Template -->
+    <template id="music-template">
+        <div class="music page-container">
+            <div class="page-header">
+                <h1>Music Discovery</h1>
+                <div class="music-controls">
+                    <button id="createPlaylistBtn" class="action-button">
+                        <i class="fas fa-plus"></i> Create Playlist
+                    </button>
+                </div>
+            </div>
+            
+            <div class="music-content">
+                <div class="music-tabs">
+                    <button class="tab-button active" data-tab="recommendations">For You</button>
+                    <button class="tab-button" data-tab="moods">Moods</button>
+                    <button class="tab-button" data-tab="places">Places</button>
+                    <button class="tab-button" data-tab="playlists">Your Playlists</button>
+                </div>
+                
+                <div id="recommendations-tab" class="tab-content active-tab">
+                    <h2>Recommended for You</h2>
+                    <p class="section-description">Personalized music based on your preferences and location.</p>
+                    
+                    <div class="music-tracks-container">
+                        <!-- Recommended tracks will be loaded here -->
+                        <div class="loading-state">
+                            <div class="loader"></div>
+                            <p>Loading music recommendations...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="moods-tab" class="tab-content hidden">
+                    <h2>Browse by Mood</h2>
+                    <p class="section-description">Find the perfect soundtrack for your current state of mind.</p>
+                    
+                    <div class="mood-grid">
+                        <div class="mood-card" data-mood="energetic">
+                            <div class="mood-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>Energetic</h3>
+                        </div>
+                        <div class="mood-card" data-mood="relaxed">
+                            <div class="mood-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <h3>Relaxed</h3>
+                        </div>
+                        <div class="mood-card" data-mood="focused">
+                            <div class="mood-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <h3>Focused</h3>
+                        </div>
+                        <div class="mood-card" data-mood="reflective">
+                            <div class="mood-icon">
+                                <i class="fas fa-water"></i>
+                            </div>
+                            <h3>Reflective</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="places-tab" class="tab-content hidden">
+                    <h2>Music by Location</h2>
+                    <p class="section-description">Discover tracks inspired by places around the world.</p>
+                    
+                    <div class="location-grid">
+                        <div class="location-card" data-location="Berlin">
+                            <div class="location-image">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <h3>Berlin</h3>
+                        </div>
+                        <div class="location-card" data-location="Potsdam">
+                            <div class="location-image">
+                                <i class="fas fa-tree"></i>
+                            </div>
+                            <h3>Potsdam</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="playlists-tab" class="tab-content hidden">
+                    <h2>Your Playlists</h2>
+                    <p class="section-description">Access and manage your custom collections.</p>
+                    
+                    <div class="playlists-container">
+                        <!-- User playlists will be loaded here -->
+                        <div class="loading-state">
+                            <div class="loader"></div>
+                            <p>Loading your playlists...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="music-player">
+                <div class="now-playing">
+                    <div class="track-info">
+                        <h4 class="track-title">Select a track</h4>
+                        <p class="track-artist">-</p>
+                    </div>
+                </div>
+                <div class="player-controls">
+                    <button class="control-button" id="prevTrack" disabled>
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button class="control-button play-button" id="playPause" disabled>
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-button" id="nextTrack" disabled>
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Community Page Template -->
+    <template id="community-template">
+        <div class="community page-container">
+            <div class="page-header">
+                <h1>Community</h1>
+                <div class="community-filters">
+                    <div class="search-container">
+                        <input type="text" id="communitySearch" placeholder="Search community...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="community-content">
+                <div class="trending-section">
+                    <h2>Trending Reels</h2>
+                    <p class="section-description">See what's popular in the community right now.</p>
+                    
+                    <div class="trending-reels-container">
+                        <!-- Trending reels will be loaded here -->
+                        <div class="loading-state">
+                            <div class="loader"></div>
+                            <p>Loading trending reels...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="playlists-section">
+                    <h2>Featured Playlists</h2>
+                    <p class="section-description">Curated music collections shared by the community.</p>
+                    
+                    <div class="community-playlists-container">
+                        <!-- Featured playlists will be loaded here -->
+                        <div class="loading-state">
+                            <div class="loader"></div>
+                            <p>Loading community playlists...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Profile Page Template -->
+    <template id="profile-template">
+        <div class="profile page-container">
+            <div class="profile-header">
+                <div class="profile-cover">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                
+                <div class="profile-info">
+                    <div class="profile-meta">
+                        <h2 class="profile-name">...</h2>
+                        <p class="profile-location"><i class="fas fa-map-marker-alt"></i> ...</p>
+                        <button class="edit-profile-button">Edit Profile</button>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-value">...</span>
+                            <span class="stat-label">Reels</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">...</span>
+                            <span class="stat-label">Followers</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">...</span>
+                            <span class="stat-label">Following</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-tabs">
+                <button class="tab-button active" data-tab="reels">Reels</button>
+                <button class="tab-button" data-tab="playlists">Playlists</button>
+                <button class="tab-button" data-tab="saved">Saved</button>
+            </div>
+            
+            <div id="reels-content" class="tab-content">
+                <div class="profile-reels">
+                    <!-- User reels will be loaded here -->
+                    <div class="loading-state">
+                        <div class="loader"></div>
+                        <p>Loading your reels...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="playlists-content" class="tab-content hidden">
+                <div class="profile-playlists">
+                    <!-- User playlists will be loaded here -->
+                    <div class="loading-state">
+                        <div class="loader"></div>
+                        <p>Loading your playlists...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="saved-content" class="tab-content hidden">
+                <div class="saved-items">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                        <h3>No saved items yet</h3>
+                        <p>Save reels and playlists to view them here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- JavaScript -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="components/Journal.js"></script>
+    <script src="components/MusicPlayer.js"></script>
+    <script src="components/Community.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

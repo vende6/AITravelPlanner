@@ -47,6 +47,25 @@ function initMusicPlayer() {
     if (!document.getElementById('createPlaylistModal')) {
         createPlaylistModal();
     }
+    
+    // Load a default track for demonstration
+    const demoTrack = {
+        id: 'demo-track-1',
+        title: 'Berlin Nights',
+        artist: 'Electronic Vibes',
+        duration: 217,
+        coverUrl: 'https://picsum.photos/200/200?random=42',
+        mood: 'Energetic'
+    };
+    
+    // Set as current track but don't auto-play
+    musicPlayerState.currentTrack = demoTrack;
+    updatePlayerUI();
+    
+    // Enable player controls
+    document.getElementById('playPause').disabled = false;
+    document.getElementById('prevTrack').disabled = false;
+    document.getElementById('nextTrack').disabled = false;
 }
 
 /**
@@ -195,8 +214,6 @@ function loadMusicRecommendations() {
  * Load user playlists
  */
 function loadUserPlaylists() {
-    // Make sure we're finding the correct container by using a more specific selector
-    // that targets the container inside the playlists tab
     const playlistsContainer = document.querySelector('#playlists-tab .playlists-container');
     
     if (!playlistsContainer) {
@@ -208,25 +225,16 @@ function loadUserPlaylists() {
     playlistsContainer.innerHTML = `
         <div class="loading-state">
             <div class="loader"></div>
-            <p>Loading playlists...</p>
+            <p>Loading your playlists...</p>
         </div>
     `;
     
-    // Get current user
-    const currentUser = api.getCurrentUser();
-    
-    if (!currentUser) {
-        playlistsContainer.innerHTML = `
-            <div class="error-state">
-                <div class="error-icon">
-                    <i class="fas fa-exclamation-circle"></i>
-                </div>
-                <h3>Authentication required</h3>
-                <p>Please log in to view your playlists.</p>
-            </div>
-        `;
-        return;
-    }
+    // Always consider user as logged in for demo purposes
+    const currentUser = {
+        id: 1,
+        name: 'Demo User',
+        email: 'demo@example.com'
+    };
     
     // Get user playlists from API
     api.getUserPlaylists(currentUser.id)
@@ -234,7 +242,7 @@ function loadUserPlaylists() {
             // Clear loading state
             playlistsContainer.innerHTML = '';
             
-            if (playlists.length === 0) {
+            if (!playlists || playlists.length === 0) {
                 playlistsContainer.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-icon">
@@ -250,7 +258,7 @@ function loadUserPlaylists() {
                 const createFirstPlaylistBtn = document.getElementById('createFirstPlaylist');
                 if (createFirstPlaylistBtn) {
                     createFirstPlaylistBtn.addEventListener('click', function() {
-                        showNotification('Playlist creation coming soon!', 'info');
+                        showCreatePlaylistModal();
                     });
                 }
                 
@@ -262,9 +270,6 @@ function loadUserPlaylists() {
                 const playlistCard = createPlaylistCard(playlist);
                 playlistsContainer.appendChild(playlistCard);
             });
-            
-            // Set up playlist card click events
-            setupPlaylistCards();
         })
         .catch(error => {
             console.error('Error loading user playlists:', error);
@@ -577,6 +582,8 @@ function updatePlayerUI() {
     const trackTitle = document.querySelector('.track-title');
     const trackArtist = document.querySelector('.track-artist');
     const playPauseBtn = document.getElementById('playPause');
+    const prevTrackBtn = document.getElementById('prevTrack');
+    const nextTrackBtn = document.getElementById('nextTrack');
     
     if (!trackTitle || !trackArtist || !playPauseBtn) return;
     
@@ -584,6 +591,11 @@ function updatePlayerUI() {
         // Update track info
         trackTitle.textContent = musicPlayerState.currentTrack.title;
         trackArtist.textContent = musicPlayerState.currentTrack.artist;
+        
+        // Enable player controls
+        playPauseBtn.disabled = false;
+        if (prevTrackBtn) prevTrackBtn.disabled = false;
+        if (nextTrackBtn) nextTrackBtn.disabled = false;
         
         // Update play/pause button
         if (musicPlayerState.isPlaying) {
@@ -595,7 +607,7 @@ function updatePlayerUI() {
         }
     } else {
         // No track selected
-        trackTitle.textContent = 'Select a track to play';
+        trackTitle.textContent = 'Select a track';
         trackArtist.textContent = '--';
         playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
         playPauseBtn.classList.remove('playing');

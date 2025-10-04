@@ -72,47 +72,59 @@ function setupNavigation() {
 }
 
 /**
- * Load a page by template ID
- * @param {string} pageId - The ID of the page to load
+ * Load a page
+ * @param {string} page - Page to load
  */
-function loadPage(pageId) {
-    // Check if template exists
-    const template = document.getElementById(`${pageId}-template`);
-    
-    if (!template) {
-        console.error(`Template for page ${pageId} not found`);
-        return;
-    }
-    
-    // Get the app container
+function loadPage(page) {
     const appContainer = document.getElementById('app');
+    if (!appContainer) return;
     
-    if (!appContainer) {
-        console.error('App container not found');
-        return;
-    }
-    
-    // Clone the template content
-    const pageContent = template.content.cloneNode(true);
-    
-    // Clear the app container and append the new content
+    // Clear existing content
     appContainer.innerHTML = '';
-    appContainer.appendChild(pageContent);
     
-    // Initialize the page based on its type
-    switch(pageId) {
+    // Load template based on page
+    let template;
+    
+    switch(page) {
+        case 'home':
+            template = document.getElementById('home-template');
+            break;
         case 'journal':
-            initJournal();
+            template = document.getElementById('journal-template');
             break;
         case 'music':
-            initMusicPlayer();
+            template = document.getElementById('music-template');
             break;
         case 'community':
-            initCommunity();
+            template = document.getElementById('community-template');
             break;
         case 'profile':
-            initProfile();
+            template = document.getElementById('profile-template');
             break;
+        default:
+            template = document.getElementById('home-template');
+    }
+    
+    if (template) {
+        // Clone the template content
+        const content = template.content.cloneNode(true);
+        appContainer.appendChild(content);
+        
+        // Initialize page-specific functionality
+        switch(page) {
+            case 'journal':
+                initJournal();
+                break;
+            case 'music':
+                initMusicPlayer();
+                break;
+            case 'community':
+                initCommunity();
+                break;
+            case 'profile':
+                initProfile();
+                break;
+        }
     }
 }
 

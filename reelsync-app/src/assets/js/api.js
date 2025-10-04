@@ -416,5 +416,47 @@ const api = {
                 resolve(newReel);
             }, 1500);
         });
+    },
+
+    /**
+     * Create a new playlist
+     * @param {string} title - The playlist title
+     * @param {string} description - The playlist description
+     * @param {Array} tracks - Optional array of track IDs to include in the playlist
+     * @returns {Promise} Promise that resolves with the created playlist
+     */
+    createPlaylist(title, description, tracks = []) {
+        return new Promise((resolve, reject) => {
+            // Simulate API call delay
+            setTimeout(() => {
+                // Validate required fields
+                if (!title) {
+                    reject(new Error('Playlist title is required'));
+                    return;
+                }
+                
+                if (!this.currentUser) {
+                    reject(new Error('You must be logged in to create a playlist'));
+                    return;
+                }
+                
+                // Create new playlist
+                const newPlaylist = {
+                    id: `user-playlist-${Date.now()}`,
+                    title: title,
+                    description: description || '',
+                    creator: this.currentUser.name,
+                    creatorId: this.currentUser.id,
+                    tracks: tracks,
+                    coverUrl: 'https://picsum.photos/200/200?random=' + Math.floor(Math.random() * 1000),
+                    followers: 0,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // In a real app, this would save to a database
+                
+                resolve(newPlaylist);
+            }, 1000);
+        });
     }
 };

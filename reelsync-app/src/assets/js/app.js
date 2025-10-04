@@ -43,27 +43,31 @@ function setupNavigation() {
     });
     
     // Handle CTA buttons
-    const ctaButtons = document.querySelectorAll('.cta-button');
-    ctaButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Check if the button is part of a form or modal
-            if (this.closest('form') || this.closest('.modal-content')) {
-                return; // Let the form or modal handle it
+    document.addEventListener('click', function(e) {
+        const button = e.target.closest('.cta-button');
+        
+        if (!button) return; // Not a CTA button
+        
+        // Check if the button is part of a form or modal
+        if (button.closest('form') || button.closest('.modal-content')) {
+            return; // Let the form or modal handle it
+        }
+        
+        // If it's a "Get Started" button, navigate to journal page
+        if (button.textContent.trim() === 'Get Started' || button.textContent.trim() === 'Create Your Account') {
+            // Use the API's isLoggedIn method instead of the global one
+            if (api.isLoggedIn()) {
+                // If user is logged in, go to journal
+                loadPage('journal');
+                const journalLink = document.querySelector('.nav-links a[data-page="journal"]');
+                const homeLink = document.querySelector('.nav-links a[data-page="home"]');
+                if (journalLink) journalLink.classList.add('active');
+                if (homeLink) homeLink.classList.remove('active');
+            } else {
+                // If not logged in, show signup modal
+                showModal('signupModal');
             }
-            
-            // If it's a "Get Started" button, navigate to journal page
-            if (this.textContent.trim() === 'Get Started' || this.textContent.trim() === 'Create Your Account') {
-                if (isLoggedIn()) {
-                    // If user is logged in, go to journal
-                    loadPage('journal');
-                    document.querySelector('.nav-links a[data-page="journal"]').classList.add('active');
-                    document.querySelector('.nav-links a[data-page="home"]').classList.remove('active');
-                } else {
-                    // If not logged in, show signup modal
-                    showModal('signupModal');
-                }
-            }
-        });
+        }
     });
 }
 

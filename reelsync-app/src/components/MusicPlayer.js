@@ -14,7 +14,8 @@ const musicPlayerState = {
  * Initialize the music player page
  */
 function initMusicPlayer() {
-    if (!isLoggedIn()) {
+    // Check authentication using the API method
+    if (!api.isLoggedIn()) {
         showModal('loginModal');
         return;
     }
@@ -38,8 +39,13 @@ function initMusicPlayer() {
     const createPlaylistBtn = document.getElementById('createPlaylistBtn');
     if (createPlaylistBtn) {
         createPlaylistBtn.addEventListener('click', function() {
-            showNotification('Playlist creation coming soon!', 'info');
+            showCreatePlaylistModal();
         });
+    }
+    
+    // Create the playlist creation modal if it doesn't exist
+    if (!document.getElementById('createPlaylistModal')) {
+        createPlaylistModal();
     }
 }
 
@@ -98,7 +104,30 @@ function loadMusicRecommendations() {
         </div>
     `;
     
-    // Get current user
+    // Check authentication properly using the API's isLoggedIn function
+    if (!api.isLoggedIn()) {
+        tracksContainer.innerHTML = `
+            <div class="error-state">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h3>Authentication required</h3>
+                <p>Please log in to view recommendations.</p>
+                <button class="cta-button login-prompt-btn">Log In Now</button>
+            </div>
+        `;
+        
+        // Add event listener for login button
+        const loginPromptBtn = tracksContainer.querySelector('.login-prompt-btn');
+        if (loginPromptBtn) {
+            loginPromptBtn.addEventListener('click', function() {
+                showModal('loginModal');
+            });
+        }
+        return;
+    }
+    
+    // Get current user using the API's getCurrentUser function
     const currentUser = api.getCurrentUser();
     
     if (!currentUser) {
@@ -109,8 +138,17 @@ function loadMusicRecommendations() {
                 </div>
                 <h3>Authentication required</h3>
                 <p>Please log in to view recommendations.</p>
+                <button class="cta-button login-prompt-btn">Log In Now</button>
             </div>
         `;
+        
+        // Add event listener for login button
+        const loginPromptBtn = tracksContainer.querySelector('.login-prompt-btn');
+        if (loginPromptBtn) {
+            loginPromptBtn.addEventListener('click', function() {
+                showModal('loginModal');
+            });
+        }
         return;
     }
     
@@ -641,4 +679,184 @@ function playNextTrack() {
     
     // Play the track
     playTrack(musicPlayerState.playlist[nextIndex]);
+}
+
+/**
+ * Create the playlist modal in the DOM
+ */
+function createPlaylistModal() {
+    // Create modal element
+    const modalEl = document.createElement('div');
+    modalEl.id = 'createPlaylistModal';
+    modalEl.className = 'modal';
+    
+    modalEl.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Playlist</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="createPlaylistForm">
+                    <div class="form-group">
+                        <label for="playlistTitle">Playlist Title*</label>
+                        <input type="text" id="playlistTitle" name="playlistTitle" placeholder="My Awesome Playlist" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="playlistDescription">Description</label>
+                        <textarea id="playlistDescription" name="playlistDescription" 
+                            placeholder="What's this playlist about?" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Add tracks from:</label>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="includeRecommended" checked> 
+                                Include recommended tracks
+                            </label>
+                            <label>
+                                <input type="checkbox" id="includeCurrentlyPlaying"> 
+                                Include currently playing track
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn cancel-playlist-btn">Cancel</button>
+                        <button type="submit" class="cta-button">Create Playlist</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    // Add to the DOM
+    document.body.appendChild(modalEl);
+    
+    // Add event listeners
+    const closeBtn = modalEl.querySelector('.close-btn');
+    const cancelBtn = modalEl.querySelector('.cancel-playlist-btn');
+    const form = modalEl.querySelector('#createPlaylistForm');
+    
+    closeBtn.addEventListener('click', () => {
+        modalEl.style.display = 'none';
+    });
+    
+    cancelBtn.addEventListener('click', () => {
+        modalEl.style.display = 'none';
+    });
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        createNewPlaylist();
+    });
+    
+    // Close on outside click
+    window.addEventListener('click', function(e) {
+        if (e.target === modalEl) {
+            modalEl.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Show the create playlist modal
+ */
+function showCreatePlaylistModal() {
+    const modal = document.getElementById('createPlaylistModal');
+    if (modal) {
+        // Reset form
+        const form = modal.querySelector('#createPlaylistForm');
+        if (form) form.reset();
+        
+        // Show modal
+        modal.style.display = 'block';
+    } else {
+        // Create modal if it doesn't exist
+        createPlaylistModal();
+        showCreatePlaylistModal();
+    }
+}
+
+/**
+ * Create a new playlist based on form input
+ */
+function createNewPlaylist() {
+    const title = document.getElementById('playlistTitle').value.trim();
+    const description = document.getElementById('playlistDescription').value.trim();
+    
+    if (!title) {
+        showNotification('Please enter a playlist title', 'error');
+        return;
+    }
+    
+    const includeRecommended = document.getElementById('includeRecommended').checked;
+    const includeCurrentlyPlaying = document.getElementById('includeCurrentlyPlaying').checked;
+    
+    // Collect tracks
+    let tracks = [];
+    
+    // Add current track if selected
+    if (includeCurrentlyPlaying && musicPlayerState.currentTrack) {
+        tracks.push(musicPlayerState.currentTrack.id);
+    }
+    
+    // Get recommended tracks if selected
+    if (includeRecommended) {
+        const currentUser = api.getCurrentUser();
+        
+        // Show loading notification
+        showNotification('Creating your playlist...', 'info');
+        
+        // Get recommendations and create playlist
+        api.getUserMusicRecommendations(currentUser.id)
+            .then(recommendations => {
+                // Add recommended track IDs to tracks array (up to 5)
+                const recommendedIds = recommendations.slice(0, 5).map(track => track.id);
+                tracks = [...tracks, ...recommendedIds];
+                
+                // Create the playlist
+                return api.createPlaylist(title, description, tracks);
+            })
+            .then(newPlaylist => {
+                // Close the modal
+                const modal = document.getElementById('createPlaylistModal');
+                if (modal) modal.style.display = 'none';
+                
+                // Show success notification
+                showNotification(`Playlist "${newPlaylist.title}" created successfully!`, 'success');
+                
+                // Reload playlists
+                loadUserPlaylists();
+                
+                // Switch to playlists tab
+                const playlistsTabButton = document.querySelector('.tab-button[data-tab="playlists"]');
+                if (playlistsTabButton) playlistsTabButton.click();
+            })
+            .catch(error => {
+                console.error('Error creating playlist:', error);
+                showNotification(`Failed to create playlist: ${error.message}`, 'error');
+            });
+    } else {
+        // Create playlist without recommendations
+        api.createPlaylist(title, description, tracks)
+            .then(newPlaylist => {
+                // Close the modal
+                const modal = document.getElementById('createPlaylistModal');
+                if (modal) modal.style.display = 'none';
+                
+                // Show success notification
+                showNotification(`Playlist "${newPlaylist.title}" created successfully!`, 'success');
+                
+                // Reload playlists
+                loadUserPlaylists();
+                
+                // Switch to playlists tab
+                const playlistsTabButton = document.querySelector('.tab-button[data-tab="playlists"]');
+                if (playlistsTabButton) playlistsTabButton.click();
+            })
+            .catch(error => {
+                console.error('Error creating playlist:', error);
+                showNotification(`Failed to create playlist: ${error.message}`, 'error');
+            });
+    }
 }
